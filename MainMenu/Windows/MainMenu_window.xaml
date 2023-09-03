@@ -1,0 +1,26 @@
+﻿<Window x:Class="MainMenu.MainMenu_window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MainMenu"
+        mc:Ignorable="d"
+        Title="Поиск запрещенных слов" Height="450" Width="800"
+        ResizeMode="CanMinimize">
+    <Window.Resources>
+        <ResourceDictionary Source="\Resources\MainMenu_Resource.xaml"/>
+    </Window.Resources>
+    
+    <Grid Style="{StaticResource Background_Grid}" ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.35*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center">
+            <Label Content="Запрещенные слова!#!#!" Style="{StaticResource MainHeading_Label}"/>
+            <Label Content="Заменим все запрещенные слова из ваших файлов!" Style="{StaticResource Subtitle_Label}"/>
+            <Border Height="2" Background="Black"/>
+        </StackPanel>
+
+    </Grid>
+</Window>
