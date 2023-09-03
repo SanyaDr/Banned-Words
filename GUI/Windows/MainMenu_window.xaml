@@ -28,10 +28,10 @@
             <!--<Border Height="2" Background="Black"/>-->
         </StackPanel>
         <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-            <Button Content="Начать проверку" Style="{StaticResource CallTask_Button}"/>
+            <Button Content="Начать проверку" Style="{StaticResource CallTask_Button}" />
             <Button Content="Настройки" Style="{StaticResource CallTask_Button}"/>
-            <Button Content="Автор" Style="{StaticResource CallTask_Button}"/>
-            <Button Content="Выйти" Style="{StaticResource CallTask_Button}" Margin="0 35 0 0"/>
+            <Button Content="Автор" Style="{StaticResource CallTask_Button}" Click="Button_Click"/>
+            <Button Content="Выйти" Style="{StaticResource CallTask_Button}" Margin="0 35 0 0" Click="Button_Click_1"/>
         </StackPanel>
     </Grid>
 </Window>
