@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using ViewModel;
 
 namespace MainMenu
 {
@@ -19,9 +8,12 @@ namespace MainMenu
     /// </summary>
     public partial class MainMenu_window : Window
     {
+        public ThreadsClass th;
+
         public MainMenu_window()
         {
             InitializeComponent();
+            th = new ThreadsClass();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -29,9 +21,26 @@ namespace MainMenu
             MessageBox.Show("Как запустить только в одном экземпляре:\nhttps://www.cyberforum.ru/csharp-beginners/thread308706.html");
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void StartApp_Button_Click(object sender, RoutedEventArgs e)
         {
+            th.ResumeThreads();
+
+        }
+
+        private void Exit_Button_Click(object sender, RoutedEventArgs e)
+        {
+            th.Kill();
             Close();
+        }
+
+        private void Settings_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Author_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //Сделать отдельное окно
         }
     }
 }

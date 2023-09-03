@@ -1,0 +1,16 @@
+﻿<Window x:Class="GUI.Windows.BannedWords_GUI_window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI.Windows"
+        mc:Ignorable="d"
+        Title="Запрещенные слова" Height="450" Width="800" ResizeMode="CanMinimize">
+    <Window.Resources>
+        <ResourceDictionary Source="\Resources\Window_Resources.xaml"/>
+    </Window.Resources>
+
+    <Grid Style="{StaticResource Background_Grid}">
+        <TextBlock TextWrapping="Wrap"><Run Text="Создать еще окно с вводом запрещенных слов. при запуске, если запрещенные не обнаружены то вызвать это окно и спросить какие слова запрещены. Можно сделать очередь на проверку, тогда и при выборе файла сделать мультивыбор"/><LineBreak/><Run/><LineBreak/><Run Text=" Примерное предстваление внешнего вида в файле paint."/></TextBlock>
+    </Grid>
+</Window>

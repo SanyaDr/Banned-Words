@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Windows\MainMenu_window.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

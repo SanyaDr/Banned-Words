@@ -8,7 +8,7 @@
         Title="Поиск запрещенных слов" Height="450" Width="800"
         ResizeMode="CanMinimize">
     <Window.Resources>
-        <ResourceDictionary Source="\Resources\MainMenu_Resource.xaml"/>
+        <ResourceDictionary Source="\Resources\Window_Resources.xaml"/>
     </Window.Resources>
 
     <Grid Style="{StaticResource Background_Grid}">
@@ -28,10 +28,10 @@
             <!--<Border Height="2" Background="Black"/>-->
         </StackPanel>
         <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-            <Button Content="Начать проверку" Style="{StaticResource CallTask_Button}" />
-            <Button Content="Настройки" Style="{StaticResource CallTask_Button}"/>
-            <Button Content="Автор" Style="{StaticResource CallTask_Button}" Click="Button_Click"/>
-            <Button Content="Выйти" Style="{StaticResource CallTask_Button}" Margin="0 35 0 0" Click="Button_Click_1"/>
+            <Button x:Name="StartApp_Button" Content="Начать проверку" Style="{StaticResource CallTask_Button}" Click="StartApp_Button_Click" />
+            <Button x:Name="Settings_Button" Content="Настройки" Style="{StaticResource CallTask_Button}" Click="Settings_Button_Click"/>
+            <Button x:Name="Author_Button" Content="Автор" Style="{StaticResource CallTask_Button}" Click="Author_Button_Click"/>
+            <Button x:Name="Exit_Button" Content="Выйти" Style="{StaticResource CallTask_Button}" Margin="0 35 0 0" Click="Exit_Button_Click"/>
         </StackPanel>
     </Grid>
 </Window>
