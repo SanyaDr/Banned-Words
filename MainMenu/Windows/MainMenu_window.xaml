@@ -10,8 +10,14 @@
     <Window.Resources>
         <ResourceDictionary Source="\Resources\MainMenu_Resource.xaml"/>
     </Window.Resources>
-    
-    <Grid Style="{StaticResource Background_Grid}" ShowGridLines="True">
+
+    <Grid Style="{StaticResource Background_Grid}">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF003CD0" Offset="0.23"/>
+                <GradientStop Color="#FFA2DFFF" Offset="0.23"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.35*"/>
             <RowDefinition/>
@@ -19,8 +25,13 @@
         <StackPanel Grid.Row="0" HorizontalAlignment="Center">
             <Label Content="Запрещенные слова!#!#!" Style="{StaticResource MainHeading_Label}"/>
             <Label Content="Заменим все запрещенные слова из ваших файлов!" Style="{StaticResource Subtitle_Label}"/>
-            <Border Height="2" Background="Black"/>
+            <!--<Border Height="2" Background="Black"/>-->
         </StackPanel>
-
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+            <Button Content="Начать проверку" Style="{StaticResource CallTask_Button}"/>
+            <Button Content="Настройки" Style="{StaticResource CallTask_Button}"/>
+            <Button Content="Автор" Style="{StaticResource CallTask_Button}"/>
+            <Button Content="Выйти" Style="{StaticResource CallTask_Button}" Margin="0 35 0 0"/>
+        </StackPanel>
     </Grid>
 </Window>

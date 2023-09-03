@@ -11,12 +11,23 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="Segoe Print Bold"/>
         <Setter Property="FontSize" Value="26"/>
+        <Setter Property="Foreground" Value="White"/>
     </Style>
     <!--Подзаголовок-->
     <Style x:Key="Subtitle_Label" TargetType="Label">
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="Calibri"/>
         <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
+    <!--Кнопки вызова заданий-->
+    <Style x:Key="CallTask_Button" TargetType="Button">
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Width" Value="255"/>
+        <Setter Property="Margin" Value="10"/>
     </Style>
     
     
