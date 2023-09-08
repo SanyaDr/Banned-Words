@@ -3,22 +3,30 @@
 
     <!-- Задний фон для Grid-->
     <Style x:Key="Background_Grid" TargetType="Grid">
-        <Setter Property="Background" Value="#FFA2DFFF"/>
+        <!--<Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF003CD0" Offset="0.23"/>
+                <GradientStop Color="#FFA2DFFF" Offset="0.23"/>
+            </LinearGradientBrush>
+        </Grid.Background>-->
+
     </Style>
 
     <!--Заголовок программы-->
     <Style x:Key="MainHeading_Label" TargetType="Label">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="FontFamily" Value="Segoe Print Bold"/>
-        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <!--<Setter Property="FontFamily" Value="Trebuchet M"/>-->
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="White"/>
     </Style>
     <!--Подзаголовок-->
     <Style x:Key="Subtitle_Label" TargetType="Label">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="FontFamily" Value="Calibri"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Margin" Value="25 0"/>
     </Style>
     
     <!--Кнопки вызова заданий-->
@@ -57,6 +65,10 @@
 
     </Style>
     
+    <!--Меню в верху экрана-->
+    <Style x:Key="Menu" TargetType="Menu">
+        <Setter Property = "Height" Value= "18"/>
+    </Style>
     
     
 </ResourceDictionary>

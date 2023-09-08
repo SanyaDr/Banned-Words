@@ -5,12 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.Windows"
         mc:Ignorable="d"
-        Title="Запрещенные слова" Height="450" Width="800" ResizeMode="CanMinimize">
+        Title="Запрещенные слова" Height="450" Width="800" ResizeMode="CanResize">
     <Window.Resources>
         <ResourceDictionary Source="\Resources\Window_Resources.xaml"/>
     </Window.Resources>
 
-    <Grid Style="{StaticResource Background_Grid}">
-        <TextBlock TextWrapping="Wrap"><Run Text="Создать еще окно с вводом запрещенных слов. при запуске, если запрещенные не обнаружены то вызвать это окно и спросить какие слова запрещены. Можно сделать очередь на проверку, тогда и при выборе файла сделать мультивыбор"/><LineBreak/><Run/><LineBreak/><Run Text=" Примерное предстваление внешнего вида в файле paint."/></TextBlock>
-    </Grid>
+    <StackPanel >
+        <Menu Style="{StaticResource Menu}">
+            <MenuItem Header="123"/>
+        </Menu>
+
+        <Grid Style="{StaticResource Background_Grid}">
+            <TextBlock TextWrapping="Wrap"><Run Text="Создать еще окно с вводом запрещенных слов. при запуске, если запрещенные не обнаружены то вызвать это окно и спросить какие слова запрещены. Можно сделать очередь на проверку, тогда и при выборе файла сделать мультивыбор"/><LineBreak/><Run/><LineBreak/><Run Text=" Примерное предстваление внешнего вида в файле paint."/></TextBlock>
+        </Grid>
+    </StackPanel>
 </Window>

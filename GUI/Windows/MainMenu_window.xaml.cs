@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using GUI.Windows;
+using System.Windows;
 using ViewModel;
 
 namespace MainMenu
@@ -24,6 +25,8 @@ namespace MainMenu
         private void StartApp_Button_Click(object sender, RoutedEventArgs e)
         {
             th.ResumeThreads();
+            BannedWords_GUI_window mainWindow = new BannedWords_GUI_window();
+            mainWindow.Show();
 
         }
 

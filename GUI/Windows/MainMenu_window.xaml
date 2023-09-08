@@ -5,29 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MainMenu"
         mc:Ignorable="d"
-        Title="Поиск запрещенных слов" Height="450" Width="800"
-        ResizeMode="CanMinimize">
+        Title="Поиск запрещенных слов" Height="700" Width="600"
+        ResizeMode="CanMinimize" Background="#202020" Icon="/Resources/Windows_Notepad_icon.png">
+    
     <Window.Resources>
         <ResourceDictionary Source="\Resources\Window_Resources.xaml"/>
     </Window.Resources>
 
     <Grid Style="{StaticResource Background_Grid}">
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FF003CD0" Offset="0.23"/>
-                <GradientStop Color="#FFA2DFFF" Offset="0.23"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="169*"/>
+            <ColumnDefinition Width="431*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.35*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" HorizontalAlignment="Center">
-            <Label Content="Запрещенные слова!#!#!" Style="{StaticResource MainHeading_Label}"/>
+        <StackPanel Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="10 5">
+            <Label Content="Запрещенные слова!#!" Style="{StaticResource MainHeading_Label}"/>
             <Label Content="Заменим все запрещенные слова из ваших файлов!" Style="{StaticResource Subtitle_Label}"/>
-            <!--<Border Height="2" Background="Black"/>-->
+            <Border Height="2" Background="Gray" Width="500"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+        <StackPanel HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="162,177,0,0" Grid.RowSpan="2">
             <Button x:Name="StartApp_Button" Content="Начать проверку" Style="{StaticResource CallTask_Button}" Click="StartApp_Button_Click" />
             <Button x:Name="Settings_Button" Content="Настройки" Style="{StaticResource CallTask_Button}" Click="Settings_Button_Click"/>
             <Button x:Name="Author_Button" Content="Автор" Style="{StaticResource CallTask_Button}" Click="Author_Button_Click"/>

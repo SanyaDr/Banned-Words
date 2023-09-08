@@ -8,7 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Windows\Windows_Notepad_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Windows_Notepad_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
