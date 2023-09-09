@@ -5,18 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.Windows"
         mc:Ignorable="d"
-        Title="Запрещенные слова" Height="450" Width="800" ResizeMode="CanResize">
+        Title="Запрещенные слова" Height="350" Width="870" ResizeMode="CanMinimize"
+    Background="#202020"
+    Icon="/Resources/Windows_Notepad_icon.png">
     <Window.Resources>
         <ResourceDictionary Source="\Resources\Window_Resources.xaml"/>
     </Window.Resources>
 
-    <StackPanel >
-        <Menu Style="{StaticResource Menu}">
-            <MenuItem Header="123"/>
+
+    <StackPanel>
+        <Menu Style="{StaticResource Menu}" Foreground="White">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Открыть" Foreground="Black" Click="OpenFile"/>
+                <MenuItem Header="Сохранить отчёт" Foreground="Black" Click="SaveReport"/>
+                <Separator/>
+                <MenuItem Header="Выйти" Foreground="Black" Click="Exit"/>
+            </MenuItem>
+            <MenuItem  Header="Слова">
+                <MenuItem Header="Запрещенные слова" Foreground="Black" Click="OpenBannedWordWindow"/>
+                <MenuItem Header="Заменяемые символы" Foreground="Black" Click="OpenReplaceableSymbols"/>
+                <Separator />
+                <MenuItem Header="Восстановить по умолчанию" Foreground="Black" />
+            </MenuItem>
+            <MenuItem Header="Отчёт" Click="SaveReport"/>
         </Menu>
 
-        <Grid Style="{StaticResource Background_Grid}">
-            <TextBlock TextWrapping="Wrap"><Run Text="Создать еще окно с вводом запрещенных слов. при запуске, если запрещенные не обнаружены то вызвать это окно и спросить какие слова запрещены. Можно сделать очередь на проверку, тогда и при выборе файла сделать мультивыбор"/><LineBreak/><Run/><LineBreak/><Run Text=" Примерное предстваление внешнего вида в файле paint."/></TextBlock>
+        <Grid Height="300">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Выберите действие:" HorizontalAlignment="Center" Style="{StaticResource MainHeading_Label}" Margin="10"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Button x:Name="BeginBan_Button" Content="Начать сканирование" HorizontalContentAlignment="Center" Width="250" Style="{StaticResource CallTask_Button}" Click="BeginBan_Button_Click"/>
+                <Button x:Name="SelectFiles_Button" Content="Выбрать файлы" HorizontalContentAlignment="Center" Width="250" Style="{StaticResource CallTask_Button}" Click="OpenFile"/>
+                <Button x:Name="Words_Button" Content="Отчёт" HorizontalContentAlignment="Center" Width="250" Style="{StaticResource CallTask_Button}" Click="SaveReport"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Label Content="Количество выбранных файлов:  " Foreground="White"/>
+                <Label x:Name="CountSelectedFiles_Label" Content="0" Foreground="White"/>
+            </StackPanel>
+            <Button x:Name="Close_Button" Grid.Row="3" Content="Закрыть" HorizontalAlignment="Right" Width="250" Margin="0 0 15 0" Style="{StaticResource CallTask_Button}" Click="Exit"/>
         </Grid>
     </StackPanel>
 </Window>

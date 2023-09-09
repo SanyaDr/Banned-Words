@@ -1,4 +1,5 @@
 ﻿using GUI.Windows;
+using Microsoft.Win32;
 using System.Windows;
 using ViewModel;
 
@@ -15,6 +16,7 @@ namespace MainMenu
         {
             InitializeComponent();
             th = new ThreadsClass();
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -26,8 +28,9 @@ namespace MainMenu
         {
             th.ResumeThreads();
             BannedWords_GUI_window mainWindow = new BannedWords_GUI_window();
-            mainWindow.Show();
-
+            Hide();
+            mainWindow.ShowDialog();
+            Show();
         }
 
         private void Exit_Button_Click(object sender, RoutedEventArgs e)
@@ -38,7 +41,10 @@ namespace MainMenu
 
         private void Settings_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings_GUI_window settings = new Settings_GUI_window();
+            Hide();
+            settings.ShowDialog();
+            Show();
         }
 
         private void Author_Button_Click(object sender, RoutedEventArgs e)
