@@ -12,7 +12,6 @@
         <ResourceDictionary Source="\Resources\Window_Resources.xaml"/>
     </Window.Resources>
 
-
     <StackPanel>
         <Menu Style="{StaticResource Menu}" Foreground="White">
             <MenuItem Header="Файл">

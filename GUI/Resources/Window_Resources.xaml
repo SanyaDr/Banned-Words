@@ -74,7 +74,19 @@
         </Setter>
     </Style>
 
-    <!--Кнопки-->
-    <!--<Style x:Key="ButtonsIn"-->
+    <!--Log TextBox-->
+    <Style x:Key="Logger_TextBox" TargetType="TextBox">
+        <Setter Property="Margin" Value="0 20 20 5"/>
+        <Setter Property="Background" Value="#555555"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+    </Style>
+    
+    <!--ProgressBar-->
+    <Style x:Key="ProgressBar" TargetType="ProgressBar">
+        <Setter Property="Margin" Value="35 0"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Background" Value="#555555"/>
+        <Setter Property="Value" Value="15"/>
+    </Style>
     
 </ResourceDictionary>

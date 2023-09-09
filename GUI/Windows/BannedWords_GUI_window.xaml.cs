@@ -3,6 +3,7 @@ using Model;
 using System;
 using System.IO;
 using System.Windows;
+using ViewModel;
 
 namespace GUI.Windows
 {
@@ -13,9 +14,11 @@ namespace GUI.Windows
     {
         private SelectedFiles selectedFiles = new SelectedFiles();
         private Report reporter = new Report();
-        public BannedWords_GUI_window()
+        private ThreadsClass th;
+        public BannedWords_GUI_window(ThreadsClass threads)
         {
             InitializeComponent();
+            th = threads;
         }
 
         private void OpenFile(object sender, RoutedEventArgs e)
@@ -59,7 +62,11 @@ namespace GUI.Windows
         {
             if(selectedFiles.pathsToScan.Length > 0)
             {
-
+                th.ResumeThreads();
+                ProgressBar_window scanWindow = new ProgressBar_window();
+                Hide();
+                scanWindow.ShowDialog();
+                Show();
             }
             else
             {
