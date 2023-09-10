@@ -2,6 +2,7 @@
 using Model;
 using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using ViewModel;
 
@@ -15,9 +16,11 @@ namespace GUI.Windows
         private SelectedFiles selectedFiles = new SelectedFiles();
         private Report reporter = new Report();
         private ThreadsClass th;
+        private BannedWords bannedWords;
         public BannedWords_GUI_window(ThreadsClass threads)
         {
             InitializeComponent();
+            bannedWords = new BannedWords();
             th = threads;
         }
 
@@ -60,18 +63,20 @@ namespace GUI.Windows
 
         private void BeginBan_Button_Click(object sender, RoutedEventArgs e)
         {
-            if(selectedFiles.pathsToScan.Length > 0)
+            if (selectedFiles.pathsToScan.Length <= 0)
             {
-                th.ResumeThreads();
-                ProgressBar_window scanWindow = new ProgressBar_window();
-                Hide();
-                scanWindow.ShowDialog();
-                Show();
+                OpenFile(sender, e);
+                if (selectedFiles.pathsToScan.Length <= 0)
+                {
+                    MessageBox.Show("Вы не выбрали файлы для сканирования");
+                    return;
+                }
             }
-            else
-            {
-                MessageBox.Show("Вы не выбрали файлы для сканирования");
-            }
+            ProgressBar_window scanWindow = new ProgressBar_window(th, selectedFiles, bannedWords, reporter);
+            Hide();
+            scanWindow.ShowDialog();
+            Show();
+
         }
     }
 }

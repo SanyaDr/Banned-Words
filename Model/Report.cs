@@ -10,10 +10,16 @@ namespace Model
     public class Report
     {
         public List<string> log = new List<string> { };
-        public void AddToLog(string data)
+        public void AddLineToLog(string data)
         {
-            log.Add(data);
+            log.Add(data + "\n");
         }
+
+        public void PrintStartedScanFile(string fileName)
+        { }
+
+        public void FoundBannedWord(string countFound)
+        { }
 
         public void PrintReport(string path)
         {

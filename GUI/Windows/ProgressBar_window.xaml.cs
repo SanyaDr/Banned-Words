@@ -1,16 +1,10 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using ViewModel;
 
 namespace GUI.Windows
 {
@@ -19,9 +13,53 @@ namespace GUI.Windows
     /// </summary>
     public partial class ProgressBar_window : Window
     {
-        public ProgressBar_window()
+        ThreadsClass th;
+        SelectedFiles selectedFiles;
+        BannedWords banWords;
+        Report report;
+        bool isStarted = false, isFinished = false;
+        string resultPath = string.Empty;
+        public ProgressBar_window(ThreadsClass threads, SelectedFiles selectedfiles, BannedWords banWords, Report reporter)
         {
             InitializeComponent();
+            th = threads;
+            OpenResultFolder_Button.IsEnabled = false;
+            PauseResume_Button.IsEnabled = false;
+            selectedFiles = selectedfiles;
+            this.banWords = banWords;
+            report = reporter;
+        }
+
+        private void StartScan(object sender, RoutedEventArgs e)
+        {
+            th.ResumeThreads();
+            isStarted = true;
+            if(PathToSaveFiles_TextBox.Text.Length <= 0)
+            {
+                PathToSaveFiles_TextBox.Text = resultPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Запрещенные слова";
+            }
+
+            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles, banWords, report, th, resultPath));
+            scanThread.Start();
+        }
+
+        private void PauseAndResume(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void OpenFolder(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Exit(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OpenSaveFileDialog_Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
