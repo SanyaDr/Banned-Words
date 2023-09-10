@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Model;
@@ -9,6 +10,7 @@ namespace Model
     {
         public static object locker = new();
         private static char[] separators = { ',', '.', '!', '?', '(', ')', ' ', '<', '>', '\"', '\'', '|' };
+        private static string separatorPattern = "([ !?,.()\'\"|])";
         /// <summary>
         /// Сканирует приложение на наличие запрещенных слов и заменяет их на символы
         /// </summary>
@@ -18,23 +20,36 @@ namespace Model
         /// <returns></returns>
         public static string CheckLineForBannedWords(BannedWords banWords, string sentence, Report logger, int strNum)
         {
-            //string[] words = sentence.Split(separators);
+            //3.0
+
+            //string test = "У лукоморья, дуб, зеленый! И кот ходит там!";
+            //string[] res2 = test.Split(separators, StringSplitOptions.None);
+            string[] words = Regex.Split(sentence, separatorPattern);
+
             int count = 0;
-            foreach(var ban in  banWords.GetBannedWords())
+            
+            for(int i = 0; i < words.Length; i++)
             {
-                if (sentence.ToLower().Contains(ban))
+                if (banWords.GetBannedWords().Contains(words[i].ToLower()))
                 {
                     count++;
-                    //int index = sentence.IndexOf(ban);
-                    sentence = sentence.ToLower().Replace(ban, banWords.GetReplaceString());
+                    words[i] = banWords.GetReplaceString();
                 }
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach(string word in words)
+            {
+                sb.Append(word);
             }
 
             if (count > 0)
             {
                 logger.FoundBannedWord(count, strNum);
             }
-            return sentence;
+            return sb.ToString();
+            /*
+             * 1.0
+            //string[] words = sentence.Split(separators);
 
             //for(int i = 0; i < words.Length && !th.GetStatus(); i++)
             //{
@@ -57,6 +72,28 @@ namespace Model
             //        res += " ";
             //    }
             //}
+            */
+
+            /*
+             * 2.0
+                        int count = 0;
+            foreach(var ban in  banWords.GetBannedWords())
+            {
+                if (sentence.ToLower().Contains(ban))
+                {
+                    count++;
+                    //int index = sentence.IndexOf(ban);
+                    sentence = sentence.ToLower().Replace(ban, banWords.GetReplaceString());
+                }
+            }
+
+            if (count > 0)
+            {
+                logger.FoundBannedWord(count, strNum);
+            }
+            return sentence;
+             */
+
         }
 
         public static void ScanFiles(SelectedFiles selF, BannedWords banW, Report logger, ThreadsClass thC, string resPath)
