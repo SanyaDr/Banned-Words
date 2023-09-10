@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,20 @@ namespace Model
         public void PrintStartedScanFile(string fileName)
         { }
 
-        public void FoundBannedWord(string countFound)
-        { }
+        public void PrintFinishedScanFile(string oldFilePath, string fileName)
+        {
+            AddLineToLog($"Завершена проверка файла {fileName}! ->\nЕго изначальный путь:{oldFilePath}");
+        }
+
+        /// <summary>
+        /// Добавление в отчёт уведомления о том, что найдено запрещенное слово
+        /// </summary>
+        /// <param name="count">Количество запрещенных слов в предложении</param>
+        /// <param name="strNum">Номер строки</param>
+        public void FoundBannedWord(int count, int strNum)
+        {
+            AddLineToLog($"Найдено запрещенных слов: {count}, в строке {strNum}!");
+        }
 
         public void PrintReport(string path)
         {

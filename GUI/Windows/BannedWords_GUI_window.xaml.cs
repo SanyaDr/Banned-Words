@@ -45,9 +45,13 @@ namespace GUI.Windows
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "Текстовый документ|*.txt";
-                sfd.FileName = $"Отчёт о замене слов {DateTime.Now.ToShortDateString()}";
                 sfd.ShowDialog();
                 selectedFiles.pathToReport = sfd.FileName;
+                if(selectedFiles.pathToReport.Length <= 0)
+                {
+                    return;
+                }
+                sfd.FileName = $"Отчёт о замене слов {DateTime.Now.ToShortDateString()}";
             }
             reporter.PrintReport(selectedFiles.pathToReport);
             MessageBox.Show("Отчёт сохранен успешно!\nПуть к файлу: " + selectedFiles.pathToReport);

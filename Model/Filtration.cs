@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
 using Model;
 
 namespace Model
@@ -6,6 +8,7 @@ namespace Model
     public static class Filtration
     {
         public static object locker = new();
+        private static char[] separators = { ',', '.', '!', '?', '(', ')', ' ', '<', '>', '\"', '\'', '|' };
         /// <summary>
         /// Сканирует приложение на наличие запрещенных слов и заменяет их на символы
         /// </summary>
@@ -13,30 +16,47 @@ namespace Model
         /// <param name="sentence">Предложение которое надо просканировать</param>
         /// <param name="logger">Объект для создания лога</param>
         /// <returns></returns>
-        public static string CheckLineForBannedWords(BannedWords banWords, string sentence, Report logger, ThreadsClass th)
+        public static string CheckLineForBannedWords(BannedWords banWords, string sentence, Report logger, int strNum)
         {
-            string[] words = sentence.Split(' ');
-            for(int i = 0; i < words.Length && !th.GetStatus(); i++)
+            //string[] words = sentence.Split(separators);
+            int count = 0;
+            foreach(var ban in  banWords.GetBannedWords())
             {
-                if (banWords.GetBannedWords().Contains(words[i].ToLower()))
+                if (sentence.ToLower().Contains(ban))
                 {
-                    words[i] = string.Empty;
-                    for (int j = 0; j < banWords.countSymbols; j++)
-                    {
-                        words[i] += banWords.ReplaceSymbol.ToString();
-                    }
+                    count++;
+                    //int index = sentence.IndexOf(ban);
+                    sentence = sentence.ToLower().Replace(ban, banWords.GetReplaceString());
                 }
             }
-            string res = string.Empty;
-            for(int i = 0; i < words.Length; i++)
+
+            if (count > 0)
             {
-                res += words[i];
-                if(i != words.Length-1)
-                {
-                    res += " ";
-                }
+                logger.FoundBannedWord(count, strNum);
             }
-            return res;
+            return sentence;
+
+            //for(int i = 0; i < words.Length && !th.GetStatus(); i++)
+            //{
+            //    logger.FoundBannedWord(1, strNum);
+            //    if (banWords.GetBannedWords().Contains(words[i].ToLower()))
+            //    {
+            //        words[i] = string.Empty;
+            //        for (int j = 0; j < banWords.countSymbols; j++)
+            //        {
+            //            words[i] += banWords.ReplaceSymbol.ToString();
+            //        }
+            //    }
+            //}
+            //string res = string.Empty;
+            //for(int i = 0; i < words.Length; i++)
+            //{
+            //    res += words[i];
+            //    if(i != words.Length-1)
+            //    {
+            //        res += " ";
+            //    }
+            //}
         }
 
         public static void ScanFiles(SelectedFiles selF, BannedWords banW, Report logger, ThreadsClass thC, string resPath)
@@ -56,6 +76,7 @@ namespace Model
                     using (StreamReader sr = new StreamReader(file))
                     {
                         string? line;
+                        int strNum = 1;
                         while ((line = sr.ReadLine()) != null && !thC.GetStatus())
                         {
 
@@ -63,7 +84,8 @@ namespace Model
                             //УБЕРИ ЭТО
                             //Добавить в логер в какой строке найдено слово
 
-                            string output = Filtration.CheckLineForBannedWords(banW, line, logger, thC);
+                            string output = Filtration.CheckLineForBannedWords(banW, line, logger, strNum);
+                            strNum++;
                             new Thread(() =>
                             {
                                 lock (locker)
@@ -77,7 +99,6 @@ namespace Model
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {

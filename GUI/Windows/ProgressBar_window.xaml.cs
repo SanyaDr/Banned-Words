@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using System.Windows.Threading;
 using Model;
 
 namespace GUI.Windows
@@ -17,7 +16,6 @@ namespace GUI.Windows
         SelectedFiles selectedFiles;
         BannedWords banWords;
         Report report;
-        Dispatcher disp = Dispatcher.CurrentDispatcher;
         string baseFolder = "\\Запрещенные слова";
         public ProgressBar_window(ThreadsClass threads, SelectedFiles selectedfiles, BannedWords banWords, Report reporter)
         {
@@ -27,6 +25,12 @@ namespace GUI.Windows
             selectedFiles = selectedfiles;
             this.banWords = banWords;
             report = reporter;
+            Closing += ProgressBar_window_Closing;
+        }
+
+        private void ProgressBar_window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            th.Kill();
         }
 
         private void StartScan(object sender, RoutedEventArgs e)
@@ -44,8 +48,9 @@ namespace GUI.Windows
                 Directory.CreateDirectory(selectedFiles.pathToFolder);
             }
             string t = selectedFiles.pathToFolder;
-            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles, banWords, report, th, t, disp));
+            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles, banWords, report, th, t));
             scanThread.Start();
+            OpenResultFolder_Button.IsEnabled = true;
         }
 
         private void OpenFolder(object sender, RoutedEventArgs e)
@@ -55,7 +60,7 @@ namespace GUI.Windows
 
         private void Exit(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
 
         private void OpenSaveFileDialog_Button_Click(object sender, RoutedEventArgs e)
