@@ -41,20 +41,33 @@ namespace GUI.Windows
 
         private void SaveReport(object sender, RoutedEventArgs e)
         {
-            if(selectedFiles.pathToReport.Length <= 0)
+            try
             {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "Текстовый документ|*.txt";
-                sfd.ShowDialog();
-                selectedFiles.pathToReport = sfd.FileName;
-                if(selectedFiles.pathToReport.Length <= 0)
+                if (selectedFiles.pathToReport.Length <= 0)
                 {
-                    return;
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Title = "Выберите папку куда хотите сохранить отчёт!";
+                    sfd.Filter = "Текстовый документ|*.txt";
+                    sfd.FileName = $"Отчёт о замене слов {DateTime.Now.ToShortDateString()}";
+                    sfd.ShowDialog();
+                    if(!Path.Exists(Path.GetDirectoryName(sfd.FileName)))
+                    {
+                        MessageBox.Show("Ошибка пути или отмена сохранения!");
+                        return;
+                    }
+                    selectedFiles.pathToReport = sfd.FileName;
+                    if (selectedFiles.pathToReport.Length <= 0)
+                    {
+                        return;
+                    }
                 }
-                sfd.FileName = $"Отчёт о замене слов {DateTime.Now.ToShortDateString()}";
+                reporter.PrintReport(selectedFiles.pathToReport);
+                MessageBox.Show("Отчёт сохранен успешно!\nПуть к файлу: " + selectedFiles.pathToReport);
             }
-            reporter.PrintReport(selectedFiles.pathToReport);
-            MessageBox.Show("Отчёт сохранен успешно!\nПуть к файлу: " + selectedFiles.pathToReport);
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         private void Exit(object sender, RoutedEventArgs e)
         {
