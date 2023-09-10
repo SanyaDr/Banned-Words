@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using ViewModel;
 
 namespace GUI.Windows
 {
@@ -22,6 +21,12 @@ namespace GUI.Windows
             InitializeComponent();
             bannedWords = new BannedWords();
             th = threads;
+            Closing += BannedWords_GUI_window_Closing;
+        }
+
+        private void BannedWords_GUI_window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            th.Kill();
         }
 
         private void OpenFile(object sender, RoutedEventArgs e)

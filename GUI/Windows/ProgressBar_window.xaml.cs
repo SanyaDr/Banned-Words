@@ -1,10 +1,8 @@
-﻿using Model;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using ViewModel;
+using Model;
 
 namespace GUI.Windows
 {
@@ -17,8 +15,8 @@ namespace GUI.Windows
         SelectedFiles selectedFiles;
         BannedWords banWords;
         Report report;
+        string baseFolder = "\\Запрещенные слова";
         bool isStarted = false, isFinished = false;
-        string resultPath = string.Empty;
         public ProgressBar_window(ThreadsClass threads, SelectedFiles selectedfiles, BannedWords banWords, Report reporter)
         {
             InitializeComponent();
@@ -36,10 +34,16 @@ namespace GUI.Windows
             isStarted = true;
             if(PathToSaveFiles_TextBox.Text.Length <= 0)
             {
-                PathToSaveFiles_TextBox.Text = resultPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Запрещенные слова";
+                PathToSaveFiles_TextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + baseFolder;
             }
 
-            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles, banWords, report, th, resultPath));
+            int i = 2;
+            if (!Directory.Exists(PathToSaveFiles_TextBox.Text))
+            {
+                Directory.CreateDirectory(PathToSaveFiles_TextBox.Text);
+            }
+            string t = PathToSaveFiles_TextBox.Text;
+            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles, banWords, report, th, t));
             scanThread.Start();
         }
 

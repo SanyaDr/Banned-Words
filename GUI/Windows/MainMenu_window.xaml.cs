@@ -1,7 +1,6 @@
 ﻿using GUI.Windows;
-using Microsoft.Win32;
+using Model;
 using System.Windows;
-using ViewModel;
 
 namespace MainMenu
 {
@@ -16,7 +15,12 @@ namespace MainMenu
         {
             InitializeComponent();
             th = new ThreadsClass();
+            Closing += MainMenu_window_Closing;
+        }
 
+        private void MainMenu_window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            th.Kill();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

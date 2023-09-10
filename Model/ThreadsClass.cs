@@ -1,4 +1,4 @@
-﻿namespace ViewModel
+﻿namespace Model
 {
     public class ThreadsClass
     {

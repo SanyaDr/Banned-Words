@@ -48,11 +48,18 @@
                 <Setter Property="CornerRadius" Value="6"/>
             </Style>
         </Style.Resources>
+        
         <Style.Triggers>
+            <!--Триггер наведения мышью на кнопку-->
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="#3c3c3c"/>
                 <Setter Property="Height" Value="52"/>
                 <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+            <!--Триггер когда кнопка неактивна-->
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#1e1e1e"/>
+                <Setter Property="Foreground" Value="#555555"/>
             </Trigger>
         </Style.Triggers>
 

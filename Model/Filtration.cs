@@ -1,9 +1,10 @@
-﻿using ViewModel;
+﻿using Model;
 
 namespace Model
 {
     public static class Filtration
     {
+        public static object locker = new();
         /// <summary>
         /// Сканирует приложение на наличие запрещенных слов и заменяет их на символы
         /// </summary>
@@ -18,13 +19,23 @@ namespace Model
             {
                 if (banWords.GetBannedWords().Contains(words[i].ToLower()))
                 {
+                    words[i] = string.Empty;
                     for (int j = 0; j < banWords.countSymbols; j++)
                     {
                         words[i] += banWords.ReplaceSymbol.ToString();
                     }
                 }
             }
-            return words.ToString();
+            string res = string.Empty;
+            for(int i = 0; i < words.Length; i++)
+            {
+                res += words[i];
+                if(i != words.Length-1)
+                {
+                    res += " ";
+                }
+            }
+            return res;
         }
 
         public static async void ScanFiles(SelectedFiles selF, BannedWords banW, Report logger, ThreadsClass thC, string resPath)
@@ -33,38 +44,37 @@ namespace Model
             {
                 foreach (var file in selF.pathsToScan)
                 {
-                    List<string> output = new List<string>();
                     string fileName = Path.GetFileName(file);
-                    File.Copy(file, resPath, true);
-                    string newPath = Path.GetDirectoryName(file) + $"БЕЗОПАСНО {fileName}";
+                    File.Copy(file, resPath + "\\" + fileName, true);
+                    string newPath = resPath + $"\\БЕЗОПАСНО {fileName}";
+                    if(File.Exists(newPath))
+                    {
+                        File.Delete(newPath);
+                    }
 
                     using (StreamReader sr = new StreamReader(file))
                     {
                         string? line;
-                        while ((line = sr.ReadLine()) != null)
+                        while ((line = sr.ReadLine()) != null && !thC.GetStatus())
                         {
-                            if (thC.GetStatus())
+
+                            //КОСТЫЛЬ
+                            //УБЕРИ ЭТО
+                            //Добавить в логер в какой строке найдено слово
+
+                            string output = Filtration.CheckLineForBannedWords(banW, line, logger, thC);
+                            new Thread(() =>
                             {
-                                return;
-                            }
-
-                            await File.WriteAllLinesAsync(newPath, output);
-                            //output.Add(Filtration.CheckLineForBannedWords(banW, line, logger, thC));
-
+                                lock (locker)
+                                {
+                                    using (StreamWriter sw = new StreamWriter(newPath, true))
+                                    {
+                                        sw.WriteLine(output);
+                                    }
+                                }
+                            }).Start();
                         }
                     }
-                    //using (StreamWriter sw = new StreamWriter(newPath, false))
-                    //{
-                    //    foreach (var line in output)
-                    //    {
-                    //        if (thC.GetStatus())
-                    //        {
-                    //            return;
-                    //        }
-                    //        sw.WriteLine(line);
-                    //    }
-                    //}
-
                 }
 
 
