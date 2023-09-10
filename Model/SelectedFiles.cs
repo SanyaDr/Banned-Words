@@ -10,5 +10,6 @@ namespace Model
     {
         public string[] pathsToScan = Array.Empty<string>();
         public string pathToReport = string.Empty;
+        public string pathToFolder = string.Empty;
     }
 }

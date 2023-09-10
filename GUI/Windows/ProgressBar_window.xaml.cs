@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 using Model;
 
 namespace GUI.Windows
@@ -15,14 +17,13 @@ namespace GUI.Windows
         SelectedFiles selectedFiles;
         BannedWords banWords;
         Report report;
+        Dispatcher disp = Dispatcher.CurrentDispatcher;
         string baseFolder = "\\Запрещенные слова";
-        bool isStarted = false, isFinished = false;
         public ProgressBar_window(ThreadsClass threads, SelectedFiles selectedfiles, BannedWords banWords, Report reporter)
         {
             InitializeComponent();
             th = threads;
             OpenResultFolder_Button.IsEnabled = false;
-            PauseResume_Button.IsEnabled = false;
             selectedFiles = selectedfiles;
             this.banWords = banWords;
             report = reporter;
@@ -31,29 +32,25 @@ namespace GUI.Windows
         private void StartScan(object sender, RoutedEventArgs e)
         {
             th.ResumeThreads();
-            isStarted = true;
             if(PathToSaveFiles_TextBox.Text.Length <= 0)
             {
                 PathToSaveFiles_TextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + baseFolder;
             }
+            selectedFiles.pathToFolder = PathToSaveFiles_TextBox.Text;
 
             int i = 2;
-            if (!Directory.Exists(PathToSaveFiles_TextBox.Text))
+            if (!Directory.Exists(selectedFiles.pathToFolder))
             {
-                Directory.CreateDirectory(PathToSaveFiles_TextBox.Text);
+                Directory.CreateDirectory(selectedFiles.pathToFolder);
             }
-            string t = PathToSaveFiles_TextBox.Text;
-            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles, banWords, report, th, t));
+            string t = selectedFiles.pathToFolder;
+            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles, banWords, report, th, t, disp));
             scanThread.Start();
         }
 
-        private void PauseAndResume(object sender, RoutedEventArgs e)
-        {
-
-        }
         private void OpenFolder(object sender, RoutedEventArgs e)
         {
-
+            Process.Start("explorer.exe", selectedFiles.pathToFolder);
         }
 
         private void Exit(object sender, RoutedEventArgs e)

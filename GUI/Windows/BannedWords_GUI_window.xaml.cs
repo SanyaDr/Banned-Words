@@ -50,6 +50,7 @@ namespace GUI.Windows
                 selectedFiles.pathToReport = sfd.FileName;
             }
             reporter.PrintReport(selectedFiles.pathToReport);
+            MessageBox.Show("Отчёт сохранен успешно!\nПуть к файлу: " + selectedFiles.pathToReport);
         }
         private void Exit(object sender, RoutedEventArgs e)
         {

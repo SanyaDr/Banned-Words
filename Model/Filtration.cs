@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using System.Threading;
+using Model;
 
 namespace Model
 {
@@ -38,7 +39,7 @@ namespace Model
             return res;
         }
 
-        public static async void ScanFiles(SelectedFiles selF, BannedWords banW, Report logger, ThreadsClass thC, string resPath)
+        public static void ScanFiles(SelectedFiles selF, BannedWords banW, Report logger, ThreadsClass thC, string resPath)
         {
             try
             {
@@ -76,7 +77,6 @@ namespace Model
                         }
                     }
                 }
-
 
             }
             catch (Exception ex)

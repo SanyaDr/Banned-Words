@@ -43,7 +43,6 @@
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="0" Width="250" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="70 0">
             <Button x:Name="StartScan_Button" Content="Запуск" Style="{StaticResource CallTask_Button}" Height="40" Margin="0 5" Click="StartScan"/>
-            <Button x:Name="PauseResume_Button" Content="Пауза" Style="{StaticResource CallTask_Button}" Height="40"  Margin="0 5" Click="PauseAndResume"/>
             <Button x:Name="OpenResultFolder_Button" Content="Открыть папку" Style="{StaticResource CallTask_Button}" Height="40"  Margin="0 5" Click="OpenFolder"/>
             <Button x:Name="Exit_Button" Content="Закрыть окно" Style="{StaticResource CallTask_Button}" Height="40"  Margin="0 25" Click="Exit" />
         </StackPanel>
