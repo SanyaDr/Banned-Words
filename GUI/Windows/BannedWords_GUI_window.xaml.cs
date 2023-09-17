@@ -12,15 +12,16 @@ namespace GUI.Windows
     /// </summary>
     public partial class BannedWords_GUI_window : Window
     {
-        private SelectedFiles selectedFiles = new SelectedFiles();
+        private SelectedFiles selectedFiles;
         private Report reporter = new Report();
         private ThreadsClass th;
         private BannedWords bannedWords;
-        public BannedWords_GUI_window(ThreadsClass threads)
+        public BannedWords_GUI_window(ThreadsClass threads, SelectedFiles selected)
         {
             InitializeComponent();
             bannedWords = new BannedWords();
             th = threads;
+            selectedFiles = selected;
             Closing += BannedWords_GUI_window_Closing;
         }
 

@@ -10,11 +10,12 @@ namespace MainMenu
     public partial class MainMenu_window : Window
     {
         public ThreadsClass th;
-
+        public SelectedFiles selected;
         public MainMenu_window()
         {
             InitializeComponent();
             th = new ThreadsClass();
+            selected = new SelectedFiles();
             Closing += MainMenu_window_Closing;
         }
 
@@ -30,7 +31,7 @@ namespace MainMenu
 
         private void StartApp_Button_Click(object sender, RoutedEventArgs e)
         {
-            BannedWords_GUI_window mainWindow = new BannedWords_GUI_window(th);
+            BannedWords_GUI_window mainWindow = new BannedWords_GUI_window(th, selected);
             Hide();
             mainWindow.ShowDialog();
             Show();
@@ -44,10 +45,8 @@ namespace MainMenu
 
         private void Settings_Button_Click(object sender, RoutedEventArgs e)
         {
-            Settings_GUI_window settings = new Settings_GUI_window();
-            Hide();
+            Settings_GUI_window settings = new Settings_GUI_window(selected);
             settings.ShowDialog();
-            Show();
         }
 
         private void Author_Button_Click(object sender, RoutedEventArgs e)

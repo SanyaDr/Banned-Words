@@ -25,7 +25,10 @@ namespace Model
         }
         public void AppendNewBanWord(string banWord)
         {
-            bannedWords.Append(banWord.ToLower());
+            if (!bannedWords.Contains(banWord))
+            {
+                bannedWords.Append(banWord.ToLower());
+            }
         }
         public string GetReplaceString()
         {
@@ -35,6 +38,28 @@ namespace Model
                 sb.Append(ReplaceSymbol);
             }
             return sb.ToString();
+        }
+        /// <summary>
+        /// Загружает запрещенные слова из файла
+        /// </summary>
+        /// <param name="path">Путь к файлу</param>
+        /// <returns>true - загрузка успешна. false - загрузка завершена с ошибками</returns>
+        public bool LoadBanWordsFromFile(string path)
+        {
+            if (Path.Exists(path))
+            {
+
+            }
+            return false;
+        }
+        /// <summary>
+        /// Сохраняет запрещенные слова в файл
+        /// </summary>
+        /// <param name="path">Путь к файлу</param>
+        /// <returns>true - загрузка успешна. false - загрузка завершена с ошибками</returns>
+        public bool SaveBanWordsIntoFile(string path)
+        {
+            return false;
         }
     }
 }

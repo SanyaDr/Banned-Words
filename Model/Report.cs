@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Data.SqlTypes;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Model
 {
     public class Report
     {
         public List<string> log = new List<string> { };
+
+
         public void AddLineToLog(string data)
         {
             log.Add(data + "\n");
         }
 
         public void PrintStartedScanFile(string fileName)
-        { }
+        {
+            AddLineToLog($"Началось сканирование файла: {fileName}");
+        }
 
         public void PrintFinishedScanFile(string oldFilePath, string fileName)
         {
@@ -50,5 +49,9 @@ namespace Model
             }
         }
 
+        public void ClearLog()
+        {
+            log.Clear();
+        }
     }
 }

@@ -24,8 +24,7 @@
                     Margin="20 8"/>
             <Button  Content="Заменяемые символы" Style="{StaticResource CallTask_Button}"
                     Margin="20 8"/>
-            <Button  Content="Изменить путь сохранения отчёта" Style="{StaticResource CallTask_Button}"
-                    Margin="20 8"/>
+            <Button x:Name="ChangePathForReport_Button" Content="Изменить путь сохранения отчёта" Style="{StaticResource CallTask_Button}" Margin="20 8" Click="ChangePathForReport_Button_Click"/>
             <Button  Content="" Style="{StaticResource CallTask_Button}"
                     Margin="20 8"/>
             <Button  Content="" Style="{StaticResource CallTask_Button}"

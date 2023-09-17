@@ -21,7 +21,16 @@
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="Margin" Value="25 0"/>
     </Style>
-    
+    <Style x:Key="Subtitle_TextBlock" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Margin" Value="25 0"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
     <!--Кнопки вызова заданий-->
     <Style x:Key="CallTask_Button" TargetType="Button">
         <Setter Property="FontWeight" Value="SemiBold"/>

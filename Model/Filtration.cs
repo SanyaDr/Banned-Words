@@ -22,6 +22,7 @@ namespace Model
         {
             //3.0
 
+            //Проверка отделения слов от разделителей
             //string test = "У лукоморья, дуб, зеленый! И кот ходит там!";
             //string[] res2 = test.Split(separators, StringSplitOptions.None);
             string[] words = Regex.Split(sentence, separatorPattern);
@@ -30,6 +31,7 @@ namespace Model
             
             for(int i = 0; i < words.Length; i++)
             {
+                
                 if (banWords.GetBannedWords().Contains(words[i].ToLower()))
                 {
                     count++;

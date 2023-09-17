@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GUI.Windows.Additional_windows;
+using Model;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GUI.Windows
 {
@@ -19,13 +9,24 @@ namespace GUI.Windows
     /// </summary>
     public partial class Settings_GUI_window : Window
     {
-        public Settings_GUI_window()
+        SelectedFiles selectedFiles;
+        public Settings_GUI_window(SelectedFiles selected)
         {
             InitializeComponent();
+            selectedFiles = selected;
         }
 
         private void Exit_Button_Click(object sender, RoutedEventArgs e)
         {
+            Close();
+        }
+
+        private void ChangePathForReport_Button_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeReportPath_window changePathWindow = new ChangeReportPath_window(selectedFiles);
+            Hide();
+            changePathWindow.ShowDialog();
+            Show();
             Close();
         }
     }

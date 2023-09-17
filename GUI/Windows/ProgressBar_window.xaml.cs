@@ -3,7 +3,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using Microsoft.Win32;
+using System.Windows.Interop;
+
 using Model;
+using System.Windows.Data;
+using System.Windows.Controls;
 
 namespace GUI.Windows
 {
@@ -17,6 +22,8 @@ namespace GUI.Windows
         BannedWords banWords;
         Report report;
         string baseFolder = "\\Запрещенные слова";
+        Binding bind = new Binding("LogInfo");
+
         public ProgressBar_window(ThreadsClass threads, SelectedFiles selectedfiles, BannedWords banWords, Report reporter)
         {
             InitializeComponent();
@@ -26,6 +33,7 @@ namespace GUI.Windows
             this.banWords = banWords;
             report = reporter;
             Closing += ProgressBar_window_Closing;
+            ScanResult_ProgressBar.Value = 0;            
         }
 
         private void ProgressBar_window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -40,11 +48,20 @@ namespace GUI.Windows
             {
                 PathToSaveFiles_TextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + baseFolder;
             }
-            selectedFiles.pathToFolder = PathToSaveFiles_TextBox.Text;
 
-            int i = 2;
+            if (PathToSaveFiles_TextBox.Text.EndsWith('\\'))
+            {
+                PathToSaveFiles_TextBox.Text.Remove(PathToSaveFiles_TextBox.Text.Length - 1, 1);
+            }
+            selectedFiles.pathToFolder = PathToSaveFiles_TextBox.Text;
+           
             if (!Directory.Exists(selectedFiles.pathToFolder))
             {
+                Directory.CreateDirectory(selectedFiles.pathToFolder);
+            }
+            else
+            {
+                selectedFiles.pathToFolder += baseFolder;
                 Directory.CreateDirectory(selectedFiles.pathToFolder);
             }
             string t = selectedFiles.pathToFolder;
@@ -66,6 +83,22 @@ namespace GUI.Windows
         private void OpenSaveFileDialog_Button_Click(object sender, RoutedEventArgs e)
         {
 
+            FolderPicker sfd = new FolderPicker();
+            if (sfd.ShowDialog() == true)
+            {
+                //Если путь выбран успешно
+                PathToSaveFiles_TextBox.Text = sfd.ResultPath;
+            }
+            else
+            {
+                //если путь не выбран
+                PathToSaveFiles_TextBox.Text = string.Empty;
+            }
+        }
+
+        private void addReport_Click(object sender, RoutedEventArgs e)
+        {
+            report.AddLineToLog("addReport button pressed!");
         }
     }
 }
