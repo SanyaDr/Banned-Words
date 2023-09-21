@@ -45,7 +45,7 @@ namespace Model
             AddLineToLog("Дровосеков Александр, 2023");
             AddLineToLog("---------------------------------------------\n");
 
-            FileController.WriteLinesToFile(path + $"\\Отчёт {DateTime.Now.ToShortDateString()}.txt", log);
+            FileController.WriteLinesToFile(path, log);
             ClearLog();
         }
 

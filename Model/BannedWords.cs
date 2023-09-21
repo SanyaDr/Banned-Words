@@ -61,5 +61,11 @@ namespace Model
         {
             return false;
         }
+
+        public void RestoreToDefault()
+        {
+            countSymbols = 7;
+            ReplaceSymbol = '*';
+        }
     }
 }

@@ -52,5 +52,12 @@ namespace Model
                 return false;
             }
         }
+    
+        public void RestoreToDefault()
+        {
+            pathToFolder = string.Empty;
+            pathToReport = string.Empty;
+            pathsToScan = Array.Empty<string>();
+        }
     }
 }

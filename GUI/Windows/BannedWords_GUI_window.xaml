@@ -24,7 +24,7 @@
                 <MenuItem Header="Запрещенные слова" Foreground="Black" Click="OpenBannedWordWindow"/>
                 <MenuItem Header="Заменяемые символы" Foreground="Black" Click="OpenReplaceableSymbols"/>
                 <Separator />
-                <MenuItem Header="Восстановить по умолчанию" Foreground="Black" />
+                <MenuItem Header="Восстановить по умолчанию" Foreground="Black" Click="RestoreSettingsToDefault" />
             </MenuItem>
             <MenuItem Header="Отчёт" Click="SaveReport"/>
         </Menu>

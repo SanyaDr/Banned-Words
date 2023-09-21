@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using GUI.Windows.Additional_windows;
+using Microsoft.Win32;
 using Model;
 using System;
 using System.IO;
@@ -77,13 +78,13 @@ namespace GUI.Windows
         }
         private void OpenBannedWordWindow(object sender, RoutedEventArgs e)
         {
-            // Не настройки а окно запрещенных слов
-            //Settings_GUI_window settings = new Settings_GUI_window();
-            //settings.ShowDialog();
+            BannedWordSettings_Window bannWSett = new BannedWordSettings_Window(bannedWords);
+            bannWSett.ShowDialog();
         }
         private void OpenReplaceableSymbols(object sender, RoutedEventArgs e)
         {
-
+            ChangeChangeableSymbols_Window change = new ChangeChangeableSymbols_Window(bannedWords);
+            change.ShowDialog();
         }
 
         private void BeginBan_Button_Click(object sender, RoutedEventArgs e)
@@ -101,7 +102,14 @@ namespace GUI.Windows
             Hide();
             scanWindow.ShowDialog();
             Show();
+        }
 
+        private void RestoreSettingsToDefault(object sender, RoutedEventArgs e)
+        {
+            selectedFiles.RestoreToDefault();
+            reporter.ClearLog();
+            bannedWords.RestoreToDefault();
+            Close();
         }
     }
 }
