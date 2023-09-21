@@ -10,10 +10,12 @@ namespace GUI.Windows
     public partial class Settings_GUI_window : Window
     {
         SelectedFiles selectedFiles;
-        public Settings_GUI_window(SelectedFiles selected)
+        BannedWords banned;
+        public Settings_GUI_window(SelectedFiles selected, BannedWords bannedWords)
         {
             InitializeComponent();
             selectedFiles = selected;
+            banned = bannedWords;
         }
 
         private void Exit_Button_Click(object sender, RoutedEventArgs e)
@@ -26,6 +28,24 @@ namespace GUI.Windows
             ChangeReportPath_window changePathWindow = new ChangeReportPath_window(selectedFiles);
             Hide();
             changePathWindow.ShowDialog();
+            Show();
+            Close();
+        }
+
+        private void AddBanWords_Button_Click(object sender, RoutedEventArgs e)
+        {
+            BannedWordSettings_Window bannWSett = new BannedWordSettings_Window(banned);
+            Hide();
+            bannWSett.ShowDialog();
+            Show();
+            Close();
+        }
+
+        private void ChangeChangeableSymbols_Button_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeChangeableSymbols_Window change = new ChangeChangeableSymbols_Window(banned);
+            Hide();
+            change.ShowDialog();
             Show();
             Close();
         }

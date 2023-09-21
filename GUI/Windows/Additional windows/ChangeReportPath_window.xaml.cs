@@ -12,7 +12,6 @@ namespace GUI.Windows.Additional_windows
     public partial class ChangeReportPath_window : Window
     {
         private SelectedFiles selectedFiles;
-        private string newPath = string.Empty;
         public ChangeReportPath_window(SelectedFiles selectedFiles)
         {
             InitializeComponent();
@@ -25,18 +24,30 @@ namespace GUI.Windows.Additional_windows
 
         private void OpenSaveFileDialog_Button_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Текстовый файл|*.txt";
-            sfd.FileName = $"Отчёт о замене слов {DateTime.Now.ToShortDateString()}";
-            sfd.ShowDialog();
-            newPath = sfd.FileName;
+            FolderPicker fp = new FolderPicker();
+            fp.Title = "Выберите папку для сохранения результатов";
+            fp.Multiselect = false;
+            if (fp.ShowDialog() == true)
+            {
+                NewPathReport_TextBox.Text = fp.ResultPath;
+            }
+            else
+            {
+                NewPathReport_TextBox.Clear();
+            }
         }
 
         private void SaveNewPath_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(Path.GetDirectoryName(newPath)))
+            if (Directory.Exists(Path.GetDirectoryName(NewPathReport_TextBox.Text)))
             {
-                selectedFiles.pathToReport = newPath;
+                selectedFiles.pathToReport = NewPathReport_TextBox.Text;
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Ошибка сохранения: Путь не существует!", "Ошибка выбора пути сохранения",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

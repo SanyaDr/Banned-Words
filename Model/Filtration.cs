@@ -18,7 +18,7 @@ namespace Model
         /// <param name="sentence">Предложение которое надо просканировать</param>
         /// <param name="logger">Объект для создания лога</param>
         /// <returns></returns>
-        public static string CheckLineForBannedWords(BannedWords banWords, string sentence, Report logger, int strNum)
+        public static string CheckLineForBannedWords(string[] banWords, string symbols, string sentence, Report logger, int strNum, out bool foundWord)
         {
             //3.0
 
@@ -32,10 +32,10 @@ namespace Model
             for(int i = 0; i < words.Length; i++)
             {
                 
-                if (banWords.GetBannedWords().Contains(words[i].ToLower()))
+                if (banWords.Contains(words[i].ToLower()))
                 {
                     count++;
-                    words[i] = banWords.GetReplaceString();
+                    words[i] = symbols;
                 }
             }
             StringBuilder sb = new StringBuilder();
@@ -47,64 +47,27 @@ namespace Model
             if (count > 0)
             {
                 logger.FoundBannedWord(count, strNum);
+                foundWord = true;
+            }
+            else
+            {
+                foundWord = false;
             }
             return sb.ToString();
-            /*
-             * 1.0
-            //string[] words = sentence.Split(separators);
-
-            //for(int i = 0; i < words.Length && !th.GetStatus(); i++)
-            //{
-            //    logger.FoundBannedWord(1, strNum);
-            //    if (banWords.GetBannedWords().Contains(words[i].ToLower()))
-            //    {
-            //        words[i] = string.Empty;
-            //        for (int j = 0; j < banWords.countSymbols; j++)
-            //        {
-            //            words[i] += banWords.ReplaceSymbol.ToString();
-            //        }
-            //    }
-            //}
-            //string res = string.Empty;
-            //for(int i = 0; i < words.Length; i++)
-            //{
-            //    res += words[i];
-            //    if(i != words.Length-1)
-            //    {
-            //        res += " ";
-            //    }
-            //}
-            */
-
-            /*
-             * 2.0
-                        int count = 0;
-            foreach(var ban in  banWords.GetBannedWords())
-            {
-                if (sentence.ToLower().Contains(ban))
-                {
-                    count++;
-                    //int index = sentence.IndexOf(ban);
-                    sentence = sentence.ToLower().Replace(ban, banWords.GetReplaceString());
-                }
-            }
-
-            if (count > 0)
-            {
-                logger.FoundBannedWord(count, strNum);
-            }
-            return sentence;
-             */
 
         }
 
-        public static void ScanFiles(SelectedFiles selF, BannedWords banW, Report logger, ThreadsClass thC, string resPath)
+        public static void ScanFiles(string[] selectedFiles, string[] bannedWords, string replaceableSymbols, Report logger, ThreadsClass thC, string resPath)
         {
+            int countFiles = selectedFiles.Length;
+            int lvlForEachFile = 100 / countFiles;
             try
             {
-                foreach (var file in selF.pathsToScan)
+                foreach (var file in selectedFiles)
                 {
+                    bool banWordFound = false;
                     string fileName = Path.GetFileName(file);
+                    logger.PrintStartedScanFile(fileName);
                     File.Copy(file, resPath + "\\" + fileName, true);
                     string newPath = resPath + $"\\БЕЗОПАСНО {fileName}";
                     if(File.Exists(newPath))
@@ -123,20 +86,22 @@ namespace Model
                             //УБЕРИ ЭТО
                             //Добавить в логер в какой строке найдено слово
 
-                            string output = Filtration.CheckLineForBannedWords(banW, line, logger, strNum);
+                            string output = Filtration.CheckLineForBannedWords(bannedWords, replaceableSymbols, line, logger, strNum, out banWordFound);
                             strNum++;
                             new Thread(() =>
                             {
                                 lock (locker)
                                 {
-                                    using (StreamWriter sw = new StreamWriter(newPath, true))
-                                    {
-                                        sw.WriteLine(output);
-                                    }
+                                    FileController.WriteLineToFile(newPath, output, true);
                                 }
                             }).Start();
                         }
                     }
+                    if(!banWordFound)
+                    {
+                        logger.PrintNoOneBanWordFound();
+                    }
+                    logger.PrintFinishedScanFile(file, fileName);
                 }
             }
             catch (Exception ex)

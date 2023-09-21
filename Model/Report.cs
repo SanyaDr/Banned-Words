@@ -1,5 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Model
 {
@@ -15,14 +16,18 @@ namespace Model
 
         public void PrintStartedScanFile(string fileName)
         {
-            AddLineToLog($"Началось сканирование файла: {fileName}");
+            AddLineToLog($"Началось сканирование файла: \"{fileName}\"");
         }
 
         public void PrintFinishedScanFile(string oldFilePath, string fileName)
         {
-            AddLineToLog($"Завершена проверка файла {fileName}! ->\nЕго изначальный путь:{oldFilePath}");
+            AddLineToLog($"Завершена проверка файла \"{fileName}\"! ->\nЕго изначальный путь:\"{oldFilePath}\"\n");
         }
 
+        public List<string> GetLog()
+        {
+            return log;
+        }
         /// <summary>
         /// Добавление в отчёт уведомления о том, что найдено запрещенное слово
         /// </summary>
@@ -33,20 +38,20 @@ namespace Model
             AddLineToLog($"Найдено запрещенных слов: {count}, в строке {strNum}!");
         }
 
-        public void PrintReport(string path)
+        public void PrintReport(string path, IEnumerable<string> log)
         {
-            using(StreamWriter sw = new StreamWriter(path, false))
-            {
-                sw.WriteLine("Отчёт работы программы \"Запрещенные слова\"");
-                sw.WriteLine("Создан: " + DateTime.Now);
-                sw.WriteLine("Дровосеков Александр, 2023");
-                sw.WriteLine("---------------------------------------------\n");
-                
-                foreach(var line in log)
-                {
-                    sw.WriteLine(line);
-                }
-            }
+            AddLineToLog("Отчёт работы программы \"Запрещенные слова\"");
+            AddLineToLog("Создан: " + DateTime.Now);
+            AddLineToLog("Дровосеков Александр, 2023");
+            AddLineToLog("---------------------------------------------\n");
+
+            FileController.WriteLinesToFile(path + $"\\Отчёт {DateTime.Now.ToShortDateString()}.txt", log);
+            ClearLog();
+        }
+
+        public void PrintNoOneBanWordFound()
+        {
+            AddLineToLog("Не найдено ни одного запрещенного слова!");
         }
 
         public void ClearLog()

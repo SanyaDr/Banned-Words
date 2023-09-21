@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI.Windows"
         mc:Ignorable="d"
-        Title="Настройки" Height="650" Width="600" ResizeMode="CanMinimize"
+        Title="Настройки" Height="450" Width="600" ResizeMode="CanMinimize"
         Background="#202020" Icon="/Resources/Windows_Notepad_icon.png">
     <Window.Resources>
         <ResourceDictionary Source="/Resources/Window_Resources.xaml"/>
@@ -13,22 +13,19 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height=".25*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
-            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Label Content="Настройки" Style="{StaticResource MainHeading_Label}"
-               Margin="15 0"/>
+               Margin="15 0 15 15"/>
         <StackPanel Grid.Row="1">
-            <Button  Content="Запрещенные слова" Style="{StaticResource CallTask_Button}"
-                    Margin="20 8"/>
-            <Button  Content="Заменяемые символы" Style="{StaticResource CallTask_Button}"
-                    Margin="20 8"/>
+            <Button x:Name="AddBanWords_Button" Content="Запрещенные слова" Style="{StaticResource CallTask_Button}"
+                    Margin="20 8" Click="AddBanWords_Button_Click" />
+            <Button x:Name="ChangeChangableWords_Button" Content="Заменяемые символы" Style="{StaticResource CallTask_Button}"
+                    Margin="20 8" Click="ChangeChangeableSymbols_Button_Click"/>
             <Button x:Name="ChangePathForReport_Button" Content="Изменить путь сохранения отчёта" Style="{StaticResource CallTask_Button}" Margin="20 8" Click="ChangePathForReport_Button_Click"/>
-            <Button  Content="" Style="{StaticResource CallTask_Button}"
-                    Margin="20 8"/>
-            <Button  Content="" Style="{StaticResource CallTask_Button}"
-                    Margin="20 8"/>
+            
         </StackPanel>
         <Button x:Name="Exit_Button" Grid.Row="2" Style="{StaticResource CallTask_Button}"
                 Content="Выход" 

@@ -11,11 +11,13 @@ namespace MainMenu
     {
         public ThreadsClass th;
         public SelectedFiles selected;
+        public BannedWords banned;
         public MainMenu_window()
         {
             InitializeComponent();
             th = new ThreadsClass();
             selected = new SelectedFiles();
+            banned = new BannedWords();
             Closing += MainMenu_window_Closing;
         }
 
@@ -31,10 +33,8 @@ namespace MainMenu
 
         private void StartApp_Button_Click(object sender, RoutedEventArgs e)
         {
-            BannedWords_GUI_window mainWindow = new BannedWords_GUI_window(th, selected);
-            Hide();
+            BannedWords_GUI_window mainWindow = new BannedWords_GUI_window(th, selected, banned);
             mainWindow.ShowDialog();
-            Show();
         }
 
         private void Exit_Button_Click(object sender, RoutedEventArgs e)
@@ -45,7 +45,7 @@ namespace MainMenu
 
         private void Settings_Button_Click(object sender, RoutedEventArgs e)
         {
-            Settings_GUI_window settings = new Settings_GUI_window(selected);
+            Settings_GUI_window settings = new Settings_GUI_window(selected, banned);
             settings.ShowDialog();
         }
 

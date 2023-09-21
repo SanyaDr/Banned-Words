@@ -13,7 +13,7 @@ namespace Model
         /// <summary>
         /// Какие слова запрещены
         /// </summary>
-        private string[] bannedWords = { "фак", "fuck" };
+        public string[] bannedWords = { "фак", "fuck" };
         /// <summary>
         /// На какой символ заменяется слово
         /// </summary>
@@ -27,7 +27,7 @@ namespace Model
         {
             if (!bannedWords.Contains(banWord))
             {
-                bannedWords.Append(banWord.ToLower());
+                bannedWords = bannedWords.Append(banWord.ToLower()).ToArray();
             }
         }
         public string GetReplaceString()

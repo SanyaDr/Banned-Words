@@ -16,10 +16,11 @@ namespace GUI.Windows
         private Report reporter = new Report();
         private ThreadsClass th;
         private BannedWords bannedWords;
-        public BannedWords_GUI_window(ThreadsClass threads, SelectedFiles selected)
+        
+        public BannedWords_GUI_window(ThreadsClass threads, SelectedFiles selected, BannedWords banned)
         {
             InitializeComponent();
-            bannedWords = new BannedWords();
+            bannedWords = banned;
             th = threads;
             selectedFiles = selected;
             Closing += BannedWords_GUI_window_Closing;
@@ -62,7 +63,7 @@ namespace GUI.Windows
                         return;
                     }
                 }
-                reporter.PrintReport(selectedFiles.pathToReport);
+                reporter.PrintReport(selectedFiles.pathToReport, reporter.GetLog());
                 MessageBox.Show("Отчёт сохранен успешно!\nПуть к файлу: " + selectedFiles.pathToReport);
             }
             catch (Exception ex)

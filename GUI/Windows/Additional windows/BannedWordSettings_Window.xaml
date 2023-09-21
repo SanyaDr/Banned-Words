@@ -1,0 +1,39 @@
+﻿<Window x:Class="GUI.Windows.Additional_windows.BannedWordSettings_Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI.Windows.Additional_windows"
+        mc:Ignorable="d"
+        Title="Настройки" Height="450" Width="600" ResizeMode="CanResize"
+        Background="#202020" Icon="/Resources/Windows_Notepad_icon.png">
+    <Window.Resources>
+        <ResourceDictionary Source="/Resources/Window_Resources.xaml"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0"
+               Content="Редактирование запрещенных слов" 
+               Style="{StaticResource MainHeading_Label}" Margin="15"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <Label Content="Путь к файлу для считывания запрещенных слов:" Grid.Row="1" Style="{StaticResource Subtitle_Label}"/>
+
+            <StackPanel  Orientation="Horizontal">
+                <TextBox x:Name="Path_TextBox" IsReadOnly="True" Width="350" Margin= "60 0 0 0" Height="20"/>
+                <Button x:Name="OpenSaveFileDialog_Button" Content="..." Style="{StaticResource CallTask_Button}" Width="30" Margin="10 0" Height="25" Click="OpenSaveFileDialog_Button_Click"/>
+                
+            </StackPanel>
+            <Label Content="Каждое слово должно быть записано с новой строки без знаков препинания" Style="{StaticResource Subtitle_Label}" FontSize="11" Margin="10 35"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="SaveNewPath_Button" Content="Сохранить"  Style="{StaticResource CallTask_Button}" Width="110" Click="SaveNewPath_Button_Click" />
+            <Button x:Name="Cancel_Button" Content="Отмена" Style="{StaticResource CallTask_Button}" Width="110" Click="Cancel_Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -22,7 +22,8 @@ namespace GUI.Windows
         BannedWords banWords;
         Report report;
         string baseFolder = "\\Запрещенные слова";
-        Binding bind = new Binding("LogInfo");
+        Binding bind = new Binding();
+        public int progVal = 0;
 
         public ProgressBar_window(ThreadsClass threads, SelectedFiles selectedfiles, BannedWords banWords, Report reporter)
         {
@@ -33,7 +34,9 @@ namespace GUI.Windows
             this.banWords = banWords;
             report = reporter;
             Closing += ProgressBar_window_Closing;
-            ScanResult_ProgressBar.Value = 0;            
+
+            bind.Source = progVal;
+
         }
 
         private void ProgressBar_window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -65,7 +68,7 @@ namespace GUI.Windows
                 Directory.CreateDirectory(selectedFiles.pathToFolder);
             }
             string t = selectedFiles.pathToFolder;
-            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles, banWords, report, th, t));
+            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles.pathsToScan, banWords.GetBannedWords(), banWords.GetReplaceString(), report, th, t));
             scanThread.Start();
             OpenResultFolder_Button.IsEnabled = true;
         }
@@ -98,7 +101,7 @@ namespace GUI.Windows
 
         private void addReport_Click(object sender, RoutedEventArgs e)
         {
-            report.AddLineToLog("addReport button pressed!");
+            progVal++;
         }
     }
 }
