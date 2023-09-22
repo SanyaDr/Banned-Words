@@ -31,6 +31,7 @@ namespace GUI.Windows
             ScanResult_ProgressBar.Value = 0;
             AllCountFiles_Label.Content = selectedfiles.pathsToScan.Length.ToString();
             FilesLeftToScan_Label.Content = selectedfiles.pathsToScan.Length.ToString();
+            PathToSaveFiles_TextBox.Text = selectedfiles.pathToReport.ToString();
             Closing += ProgressBar_window_Closing;
         }
 
@@ -39,32 +40,28 @@ namespace GUI.Windows
             try
             {
                 bool isFilter = true;
-                Thread.Sleep(150);
-                {
-                    bool waiting = true;
-                    int tick = 0;
-                    while (tick < 150 && waiting)
-                    {
-                        Thread.Sleep(100);
-                        disp.Invoke(() => { waiting = !filter.filtStarted; });
-                        tick++;
-                    }
-                }
+                Thread.Sleep(10);
 
                 while (isFilter)
                 {
                     Thread.Sleep(50);
                     disp.Invoke(() =>
                     {
-
                         isFilter = filter.isFiltering;
 
                         ScanResult_ProgressBar.Value = filter.filterStatus;
                         FilesLeftToScan_Label.Content = filter.filesToScanLeft.ToString();
+
+                        var log = report.lastProg;
+                        Logger_TextBox.Clear();
+                        foreach(var line in log)
+                        {
+                            Logger_TextBox.Text += line;
+                        }
                     });
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return;
             }
@@ -83,22 +80,17 @@ namespace GUI.Windows
             ScanResult_ProgressBar.Value = 0;
             if(PathToSaveFiles_TextBox.Text.Length <= 0)
             {
-                PathToSaveFiles_TextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + selectedFiles.baseFolder ;
-            }
-
-            if (PathToSaveFiles_TextBox.Text.EndsWith('\\'))
-            {
-                PathToSaveFiles_TextBox.Text.Remove(PathToSaveFiles_TextBox.Text.Length - 1, 1);
-            }
-            selectedFiles.pathToFolder = PathToSaveFiles_TextBox.Text;
-           
-            if (!Directory.Exists(selectedFiles.pathToFolder))
-            {
-                Directory.CreateDirectory(selectedFiles.pathToFolder);
+                selectedFiles.SelectResultDirectory(string.Empty);
+                PathToSaveFiles_TextBox.Text = selectedFiles.pathToFolder;
             }
             else
             {
-                selectedFiles.pathToFolder += selectedFiles.baseFolder;
+                selectedFiles.pathToFolder = PathToSaveFiles_TextBox.Text;
+            }
+
+           
+            if (!Directory.Exists(selectedFiles.pathToFolder))
+            {
                 Directory.CreateDirectory(selectedFiles.pathToFolder);
             }
             string t = selectedFiles.pathToFolder;
@@ -106,6 +98,7 @@ namespace GUI.Windows
             scanThread.Start();
             new Thread(CheckFilterStatus).Start();
             OpenResultFolder_Button.IsEnabled = true;
+            report.ClearLastLog();
         }
 
         private void OpenFolder(object sender, RoutedEventArgs e)

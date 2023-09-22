@@ -7,11 +7,12 @@ namespace Model
     public class Report
     {
         public List<string> log = new List<string> { };
-
+        public List<string> lastProg = new List<string>();
 
         public void AddLineToLog(string data)
         {
             log.Add(data + "\n");
+            lastProg.Add(data + "\n");
         }
 
         public void PrintStartedScanFile(string fileName)
@@ -47,6 +48,7 @@ namespace Model
 
             FileController.WriteLinesToFile(path, log);
             ClearLog();
+            ClearLastLog();
         }
 
         public void PrintNoOneBanWordFound()
@@ -57,6 +59,11 @@ namespace Model
         public void ClearLog()
         {
             log.Clear();
+        }
+
+        public void ClearLastLog()
+        {
+            lastProg.Clear();
         }
     }
 }

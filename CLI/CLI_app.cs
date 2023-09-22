@@ -50,7 +50,7 @@ void prog()
     Console.WriteLine("Принято!");
 
     Filtration filter = new Filtration();
-    filter.ScanFiles(selected.pathsToScan, bannedWords.GetBannedWords(), "*******", logger, threadClass, selected.pathToFolder, null);
+    filter.ScanFiles(selected.pathsToScan, bannedWords.GetBannedWords(), "*******", logger, threadClass, selected.pathToFolder);
 
     logger.PrintReport(selected.pathToFolder, logger.GetLog());
 

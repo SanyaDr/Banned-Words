@@ -26,22 +26,25 @@ namespace Model
         {
             try
             {
+                if (path == null || path.Length <= 0)
+                {
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                }
                 while (path.EndsWith(" "))
                 {
                     path = path.Remove(path.Length - 1, 1);
                 }
                 //Если пустой путь то выбираем рабочий стол
-                if (path.Length <= 0)
-                {
-                    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + baseFolder;
-                }
                 //Если путь кончается на \, то приводим к виду без \ на конце
                 if (path.EndsWith('\\'))
                 {
                    path = path.Remove(path.Length - 1, 1);
                 }
                 path += baseFolder;
-                Directory.CreateDirectory(path);
+                if (!Path.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
                 pathToFolder = path;
                 //Process.Start("explorer.exe", path);
                 return true;

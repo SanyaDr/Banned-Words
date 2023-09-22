@@ -29,7 +29,8 @@
                 <Button x:Name="OpenSaveFileDialog_Button" Content="..." Style="{StaticResource CallTask_Button}" Width="30" Margin="10 0" Height="25" Click="OpenSaveFileDialog_Button_Click"/>
                 
             </StackPanel>
-            <Label Content="Каждое слово должно быть записано с новой строки без знаков препинания" Style="{StaticResource Subtitle_Label}" FontSize="11" Margin="10 35"/>
+            <Label Content="В файле записаны которые запрещены." Style="{StaticResource Subtitle_Label}" FontSize="11" Margin="10 35"/>
+            <Label Content="Каждое слово должно быть записано с новой строки без знаков препинания" Style="{StaticResource Subtitle_Label}" FontSize="11" Margin="10 -20"/>
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button x:Name="SaveNewPath_Button" Content="Сохранить"  Style="{StaticResource CallTask_Button}" Width="110" Click="SaveNewPath_Button_Click" />

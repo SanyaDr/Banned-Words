@@ -10,7 +10,7 @@ namespace Model
         private string separatorPattern = "([ !?,.()\'\"|])";
         public bool filtStarted = false;
         public bool isFiltering = true;
-        public int filterStatus = 0;    // 0 - 100%
+        public double filterStatus = 0;    // 0 - 100%
         public int filesToScanLeft = 0;
         /// <summary>
         /// Сканирует приложение на наличие запрещенных слов и заменяет их на символы
@@ -60,24 +60,43 @@ namespace Model
 
         public void ScanFiles(string[] selectedFiles, string[] bannedWords, string replaceableSymbols, Report logger, ThreadsClass thC, string resPath)
         {
-            int lvlForEachFile = 100 / selectedFiles.Length;
+           
             filesToScanLeft = selectedFiles.Length;
             filtStarted = true;
             isFiltering = true;
             filterStatus = 0;
 
+
             try
             {
                 foreach (var file in selectedFiles)
                 {
-                    Thread.Sleep(2500);
-                    if(thC.GetStatus())
+                    int lvlForEachFile = 100 / selectedFiles.Length;
+                    int countlines = 0;
+                    Thread.Sleep(150);
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+                        while (sr.ReadLine() != null && !thC.GetStatus())
+                        {
+                            countlines++;
+                        }
+                    }
+                    lvlForEachFile /= countlines;
+
+                    if (thC.GetStatus())
                     {
                         return;
                     }
                     bool banWordFound = false;
                     string fileName = Path.GetFileName(file);
                     logger.PrintStartedScanFile(fileName);
+                    
+                    if(Path.Exists(resPath))
+                    {
+                        File.Copy(file, resPath + "\\" + fileName, true);
+
+                    }
+
                     File.Copy(file, resPath + "\\" + fileName, true);
                     string newPath = resPath + $"\\БЕЗОПАСНО {fileName}";
                     if(File.Exists(newPath))
@@ -87,7 +106,6 @@ namespace Model
 
                     using (StreamReader sr = new StreamReader(file))
                     {
-                        Thread.Sleep(20);
                         string? line;
                         int strNum = 1;
                         while ((line = sr.ReadLine()) != null && !thC.GetStatus())
@@ -101,15 +119,17 @@ namespace Model
                                     FileController.WriteLineToFile(newPath, output, true);
                                 }
                             }).Start();
+                            filterStatus += lvlForEachFile;
+                            Thread.Sleep(750);
                         }
                     }
                     filesToScanLeft--;
-                    filterStatus += lvlForEachFile;
                     if(!banWordFound)
                     {
                         logger.PrintNoOneBanWordFound();
                     }
                     logger.PrintFinishedScanFile(file, fileName);
+                    Thread.Sleep(350);
                 }
                 filterStatus = 100;
                 isFiltering = false;
