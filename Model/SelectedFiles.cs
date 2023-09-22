@@ -11,7 +11,7 @@ namespace Model
 {
     public class SelectedFiles
     {
-        private readonly string baseFolder = "\\Запрещенные слова";
+        public readonly string baseFolder = "\\Запрещенные слова";
 
         public string[] pathsToScan = Array.Empty<string>();
         public string pathToReport = string.Empty;

@@ -1,16 +1,17 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using Model;
 
 namespace Model
 {
-    public static class Filtration
+    public class Filtration
     {
-        public static object locker = new();
-        private static char[] separators = { ',', '.', '!', '?', '(', ')', ' ', '<', '>', '\"', '\'', '|' };
-        private static string separatorPattern = "([ !?,.()\'\"|])";
+        public object locker = new();
+        //private char[] separators = { ',', '.', '!', '?', '(', ')', ' ', '<', '>', '\"', '\'', '|' };
+        private string separatorPattern = "([ !?,.()\'\"|])";
+        public bool filtStarted = false;
+        public bool isFiltering = true;
+        public int filterStatus = 0;    // 0 - 100%
+        public int filesToScanLeft = 0;
         /// <summary>
         /// Сканирует приложение на наличие запрещенных слов и заменяет их на символы
         /// </summary>
@@ -18,7 +19,7 @@ namespace Model
         /// <param name="sentence">Предложение которое надо просканировать</param>
         /// <param name="logger">Объект для создания лога</param>
         /// <returns></returns>
-        public static string CheckLineForBannedWords(string[] banWords, string symbols, string sentence, Report logger, int strNum, out bool foundWord)
+        public string CheckLineForBannedWords(string[] banWords, string symbols, string sentence, Report logger, int strNum, out bool foundWord)
         {
             //3.0
 
@@ -57,14 +58,23 @@ namespace Model
 
         }
 
-        public static void ScanFiles(string[] selectedFiles, string[] bannedWords, string replaceableSymbols, Report logger, ThreadsClass thC, string resPath)
+        public void ScanFiles(string[] selectedFiles, string[] bannedWords, string replaceableSymbols, Report logger, ThreadsClass thC, string resPath)
         {
-            int countFiles = selectedFiles.Length;
-            int lvlForEachFile = 100 / countFiles;
+            int lvlForEachFile = 100 / selectedFiles.Length;
+            filesToScanLeft = selectedFiles.Length;
+            filtStarted = true;
+            isFiltering = true;
+            filterStatus = 0;
+
             try
             {
                 foreach (var file in selectedFiles)
                 {
+                    Thread.Sleep(2500);
+                    if(thC.GetStatus())
+                    {
+                        return;
+                    }
                     bool banWordFound = false;
                     string fileName = Path.GetFileName(file);
                     logger.PrintStartedScanFile(fileName);
@@ -77,16 +87,12 @@ namespace Model
 
                     using (StreamReader sr = new StreamReader(file))
                     {
+                        Thread.Sleep(20);
                         string? line;
                         int strNum = 1;
                         while ((line = sr.ReadLine()) != null && !thC.GetStatus())
                         {
-
-                            //КОСТЫЛЬ
-                            //УБЕРИ ЭТО
-                            //Добавить в логер в какой строке найдено слово
-
-                            string output = Filtration.CheckLineForBannedWords(bannedWords, replaceableSymbols, line, logger, strNum, out banWordFound);
+                            string output = CheckLineForBannedWords(bannedWords, replaceableSymbols, line, logger, strNum, out banWordFound);
                             strNum++;
                             new Thread(() =>
                             {
@@ -97,12 +103,17 @@ namespace Model
                             }).Start();
                         }
                     }
+                    filesToScanLeft--;
+                    filterStatus += lvlForEachFile;
                     if(!banWordFound)
                     {
                         logger.PrintNoOneBanWordFound();
                     }
                     logger.PrintFinishedScanFile(file, fileName);
                 }
+                filterStatus = 100;
+                isFiltering = false;
+                filtStarted = false;
             }
             catch (Exception ex)
             {

@@ -3,12 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using Microsoft.Win32;
-using System.Windows.Interop;
-
 using Model;
-using System.Windows.Data;
-using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace GUI.Windows
 {
@@ -21,9 +17,8 @@ namespace GUI.Windows
         SelectedFiles selectedFiles;
         BannedWords banWords;
         Report report;
-        string baseFolder = "\\Запрещенные слова";
-        Binding bind = new Binding();
-        public int progVal = 0;
+        Filtration filter = new Filtration();
+        public Dispatcher disp = Dispatcher.CurrentDispatcher;
 
         public ProgressBar_window(ThreadsClass threads, SelectedFiles selectedfiles, BannedWords banWords, Report reporter)
         {
@@ -33,10 +28,46 @@ namespace GUI.Windows
             selectedFiles = selectedfiles;
             this.banWords = banWords;
             report = reporter;
+            ScanResult_ProgressBar.Value = 0;
+            AllCountFiles_Label.Content = selectedfiles.pathsToScan.Length.ToString();
+            FilesLeftToScan_Label.Content = selectedfiles.pathsToScan.Length.ToString();
             Closing += ProgressBar_window_Closing;
+        }
 
-            bind.Source = progVal;
+        public void CheckFilterStatus()
+        {
+            try
+            {
+                bool isFilter = true;
+                Thread.Sleep(150);
+                {
+                    bool waiting = true;
+                    int tick = 0;
+                    while (tick < 150 && waiting)
+                    {
+                        Thread.Sleep(100);
+                        disp.Invoke(() => { waiting = !filter.filtStarted; });
+                        tick++;
+                    }
+                }
 
+                while (isFilter)
+                {
+                    Thread.Sleep(50);
+                    disp.Invoke(() =>
+                    {
+
+                        isFilter = filter.isFiltering;
+
+                        ScanResult_ProgressBar.Value = filter.filterStatus;
+                        FilesLeftToScan_Label.Content = filter.filesToScanLeft.ToString();
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
         }
 
         private void ProgressBar_window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -44,12 +75,15 @@ namespace GUI.Windows
             th.Kill();
         }
 
+
+
         private void StartScan(object sender, RoutedEventArgs e)
         {
             th.ResumeThreads();
+            ScanResult_ProgressBar.Value = 0;
             if(PathToSaveFiles_TextBox.Text.Length <= 0)
             {
-                PathToSaveFiles_TextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + baseFolder;
+                PathToSaveFiles_TextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + selectedFiles.baseFolder ;
             }
 
             if (PathToSaveFiles_TextBox.Text.EndsWith('\\'))
@@ -64,12 +98,13 @@ namespace GUI.Windows
             }
             else
             {
-                selectedFiles.pathToFolder += baseFolder;
+                selectedFiles.pathToFolder += selectedFiles.baseFolder;
                 Directory.CreateDirectory(selectedFiles.pathToFolder);
             }
             string t = selectedFiles.pathToFolder;
-            Thread scanThread = new Thread(() => Filtration.ScanFiles(selectedFiles.pathsToScan, banWords.GetBannedWords(), banWords.GetReplaceString(), report, th, t));
+            Thread scanThread = new Thread(() => { filter.ScanFiles(selectedFiles.pathsToScan, banWords.GetBannedWords(), banWords.GetReplaceString(), report, th, t); MessageBox.Show("Фильтрация файлов завершена!"); });
             scanThread.Start();
+            new Thread(CheckFilterStatus).Start();
             OpenResultFolder_Button.IsEnabled = true;
         }
 
@@ -85,7 +120,6 @@ namespace GUI.Windows
 
         private void OpenSaveFileDialog_Button_Click(object sender, RoutedEventArgs e)
         {
-
             FolderPicker sfd = new FolderPicker();
             if (sfd.ShowDialog() == true)
             {
@@ -97,11 +131,6 @@ namespace GUI.Windows
                 //если путь не выбран
                 PathToSaveFiles_TextBox.Text = string.Empty;
             }
-        }
-
-        private void addReport_Click(object sender, RoutedEventArgs e)
-        {
-            progVal++;
         }
     }
 }
