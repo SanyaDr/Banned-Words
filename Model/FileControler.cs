@@ -10,6 +10,9 @@ using System.IO;
 
 namespace Model
 {
+    /// <summary>
+    /// Класс отвечающий за работу с файлами
+    /// </summary>
     public static class FileController
     {
         /// <summary>
@@ -18,12 +21,19 @@ namespace Model
         /// <param name="path">Путь для записи</param>
         /// <param name="data">Данные</param>
         /// <param name="append">Добавить или перезаписать</param>
-        /// <returns></returns>
-        public static bool WriteLineToFile(string path, string data, bool append = false)
+        /// <returns>true - завершено без ошибок. false - завершилось с ошибкой</returns>
+        public static bool WriteLinesToFile(string path, string data, bool append = false)
         {
             string[] strs = { data };
             return WriteLinesToFile(path, strs, append);
         }
+        /// <summary>
+        /// Записывает данные в файл
+        /// </summary>
+        /// <param name="path">Путь для записи</param>
+        /// <param name="data">Данные</param>
+        /// <param name="append">Добавить или перезаписать</param>
+        /// <returns>true - завершено без ошибок. false - завершилось с ошибкой</returns>
         public static bool WriteLinesToFile(string path, IEnumerable<string> data, bool append = false)
         {
             try

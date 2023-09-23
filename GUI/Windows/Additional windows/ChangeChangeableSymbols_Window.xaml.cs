@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace GUI.Windows.Additional_windows
 {
     /// <summary>
-    /// Логика взаимодействия для ChangeChangeableSymbols_Window.xaml
+    /// Окно изменения заменяемых символов взаместо запрет слова
     /// </summary>
     public partial class ChangeChangeableSymbols_Window : Window
     {

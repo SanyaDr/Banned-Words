@@ -7,11 +7,11 @@ using Model;
 namespace GUI.Windows.Additional_windows
 {
     /// <summary>
-    /// Логика взаимодействия для BannedWordSettings_Window.xaml
+    /// Окно загрузки новых запрещенных слов
     /// </summary>
     public partial class BannedWordSettings_Window : Window
     {
-        BannedWords banned;
+        BannedWords banned; //Запрещенные слова
      
         public BannedWordSettings_Window(BannedWords banned)
         {

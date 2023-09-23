@@ -97,8 +97,8 @@ namespace GUI.Windows
             {
                 Directory.CreateDirectory(selectedFiles.pathToFolder);
             }
-            string t = selectedFiles.pathToFolder;
-            Thread scanThread = new Thread(() => { filter.ScanFiles(selectedFiles.pathsToScan, banWords.GetBannedWords(), banWords.GetReplaceString(), report, th, t); MessageBox.Show("Фильтрация файлов завершена!"); });
+            string _pathToFolder = selectedFiles.pathToFolder;
+            Thread scanThread = new Thread(() => { filter.ScanFiles(selectedFiles.pathsToScan, banWords.GetBannedWords(), banWords.GetReplaceString(), report, th, _pathToFolder); MessageBox.Show("Фильтрация файлов завершена!"); });
             scanThread.Start();
             new Thread(CheckFilterStatus).Start();
             OpenResultFolder_Button.IsEnabled = true;

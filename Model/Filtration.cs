@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace Model
 {
+    /// <summary>
+    /// Класс сканирующий выбранные файлы на наличие запрещенных слов
+    /// </summary>
     public class Filtration
     {
         public object locker = new();
@@ -13,7 +16,7 @@ namespace Model
         public double filterStatus = 0;    // 0 - 100%
         public int filesToScanLeft = 0;
         /// <summary>
-        /// Сканирует приложение на наличие запрещенных слов и заменяет их на символы
+        /// Сканирует предложение на наличие запрещенных слов и заменяет их на символы
         /// </summary>
         /// <param name="banWords">Объект с запрещенными словами и заменяемыми символами</param>
         /// <param name="sentence">Предложение которое надо просканировать</param>
@@ -58,9 +61,17 @@ namespace Model
 
         }
 
-        public void ScanFiles(string[] selectedFiles, string[] bannedWords, string replaceableSymbols, Report logger, ThreadsClass thC, string resPath)
+        /// <summary>
+        /// Сканирует все выбранные файлы на наличие запрещенных слов и заменяет их на символы
+        /// </summary>
+        /// <param name="selectedFiles">Список путей к файлам для сканирования (SelectedFiles.GetPathsToFile)</param>
+        /// <param name="bannedWords">Список запрещенных слов</param>
+        /// <param name="replaceableSymbols">Строка которая будет напечатана вместо запрет. слова</param>
+        /// <param name="logger">Объект класса Report отвечающий за отчёт</param>
+        /// <param name="thC">Объект класса контроля потоков</param>
+        /// <param name="pathToFolderForSaveResults">Путь к папке куда будут сохранены файлы после фильтрации</param>
+        public void ScanFiles(string[] selectedFiles, string[] bannedWords, string replaceableSymbols, Report logger, ThreadsClass thC, string pathToFolderForSaveResults)
         {
-           
             filesToScanLeft = selectedFiles.Length;
             filtStarted = true;
             isFiltering = true;
@@ -90,14 +101,14 @@ namespace Model
                     string fileName = Path.GetFileName(file);
                     logger.PrintStartedScanFile(fileName);
                     
-                    if(Path.Exists(resPath))
+                    if(Path.Exists(pathToFolderForSaveResults))
                     {
-                        File.Copy(file, resPath + "\\" + fileName, true);
+                        File.Copy(file, pathToFolderForSaveResults + "\\" + fileName, true);
 
                     }
 
-                    File.Copy(file, resPath + "\\" + fileName, true);
-                    string newPath = resPath + $"\\БЕЗОПАСНО {fileName}";
+                    File.Copy(file, pathToFolderForSaveResults + "\\" + fileName, true);
+                    string newPath = pathToFolderForSaveResults + $"\\БЕЗОПАСНО {fileName}";
                     if(File.Exists(newPath))
                     {
                         File.Delete(newPath);
@@ -115,7 +126,7 @@ namespace Model
                             {
                                 lock (locker)
                                 {
-                                    FileController.WriteLineToFile(newPath, output, true);
+                                    FileController.WriteLinesToFile(newPath, output, true);
                                 }
                             }).Start();
                             filterStatus += lvlForEachFile;

@@ -5,8 +5,8 @@ using System.Diagnostics;
 
 SelectedFiles selected = new SelectedFiles();   //Класс выбранных файлов
 Report logger = new Report();                   //Класс куда записывается отчет о работе программы
-BannedWords bannedWords = new BannedWords();
-ThreadsClass threadClass = new ThreadsClass();
+BannedWords bannedWords = new BannedWords();    //Класс запрещенных слов
+ThreadsClass threadClass = new ThreadsClass();  //Класс контролирующий завершение всех потоков после закрытия приложения
 bool started = true;
 
 void prog()

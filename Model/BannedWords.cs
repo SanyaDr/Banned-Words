@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Model
 {
+    /// <summary>
+    /// Класс хранящий запрещенные слова
+    /// </summary>
     public class BannedWords
     {
         /// <summary>
@@ -19,10 +22,17 @@ namespace Model
         /// </summary>
         public char ReplaceSymbol = '*';
 
+        /// <summary>
+        /// Получение слов
+        /// </summary>
         public string[] GetBannedWords()
         {
             return bannedWords;
         }
+        /// <summary>
+        /// Добавить новое запрещенное слово
+        /// </summary>
+        /// <param name="banWord">Слово, без знаков пунктуации и пр.</param>
         public void AppendNewBanWord(string banWord)
         {
             if (!bannedWords.Contains(banWord))
@@ -30,6 +40,10 @@ namespace Model
                 bannedWords = bannedWords.Append(banWord.ToLower()).ToArray();
             }
         }
+        /// <summary>
+        /// Получение строки, чем заменить запрещенное слово
+        /// </summary>
+        /// <returns></returns>
         public string GetReplaceString()
         {
             StringBuilder sb = new StringBuilder();
@@ -39,29 +53,32 @@ namespace Model
             }
             return sb.ToString();
         }
-        /// <summary>
-        /// Загружает запрещенные слова из файла
-        /// </summary>
-        /// <param name="path">Путь к файлу</param>
-        /// <returns>true - загрузка успешна. false - загрузка завершена с ошибками</returns>
-        public bool LoadBanWordsFromFile(string path)
-        {
-            if (Path.Exists(path))
-            {
+        ///// <summary>
+        ///// Загружает запрещенные слова из файла
+        ///// </summary>
+        ///// <param name="path">Путь к файлу</param>
+        ///// <returns>true - загрузка успешна. false - загрузка завершена с ошибками</returns>
+        //public bool LoadBanWordsFromFile(string path)
+        //{
+        //    if (Path.Exists(path))
+        //    {
 
-            }
-            return false;
-        }
-        /// <summary>
-        /// Сохраняет запрещенные слова в файл
-        /// </summary>
-        /// <param name="path">Путь к файлу</param>
-        /// <returns>true - загрузка успешна. false - загрузка завершена с ошибками</returns>
-        public bool SaveBanWordsIntoFile(string path)
-        {
-            return false;
-        }
+        //    }
+        //    return false;
+        //}
+        ///// <summary>
+        ///// Сохраняет запрещенные слова в файл
+        ///// </summary>
+        ///// <param name="path">Путь к файлу</param>
+        ///// <returns>true - загрузка успешна. false - загрузка завершена с ошибками</returns>
+        //public bool SaveBanWordsIntoFile(string path)
+        //{
+        //    return false;
+        //}
 
+        /// <summary>
+        /// Восстановление значений по умолчанию
+        /// </summary>
         public void RestoreToDefault()
         {
             countSymbols = 7;

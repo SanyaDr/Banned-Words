@@ -55,7 +55,12 @@ namespace Model
                 return false;
             }
         }
-    
+
+        public string[] GetPathsToFile()
+        {
+            return pathsToScan.ToArray();
+        }
+
         public void RestoreToDefault()
         {
             pathToFolder = string.Empty;
