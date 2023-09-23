@@ -19,6 +19,7 @@ namespace GUI.Windows
         Report report;
         Filtration filter = new Filtration();
         public Dispatcher disp = Dispatcher.CurrentDispatcher;
+        object locker = new();
 
         public ProgressBar_window(ThreadsClass threads, SelectedFiles selectedfiles, BannedWords banWords, Report reporter)
         {
@@ -47,16 +48,20 @@ namespace GUI.Windows
                     Thread.Sleep(50);
                     disp.Invoke(() =>
                     {
-                        isFilter = filter.isFiltering;
-
-                        ScanResult_ProgressBar.Value = filter.filterStatus;
-                        FilesLeftToScan_Label.Content = filter.filesToScanLeft.ToString();
-
-                        var log = report.lastProg;
-                        Logger_TextBox.Clear();
-                        foreach(var line in log)
+                        lock (locker)
                         {
-                            Logger_TextBox.Text += line;
+                            isFilter = filter.isFiltering;
+
+                            ScanResult_ProgressBar.Value = filter.filterStatus;
+                            FilesLeftToScan_Label.Content = filter.filesToScanLeft.ToString();
+
+                            var log = report.lastProg.ToArray();
+                            Logger_TextBox.Clear();
+                            foreach (var line in log)
+                            {
+                                Logger_TextBox.Text += line;
+                                Logger_TextBox.ScrollToEnd();
+                            }
                         }
                     });
                 }
@@ -87,8 +92,7 @@ namespace GUI.Windows
             {
                 selectedFiles.pathToFolder = PathToSaveFiles_TextBox.Text;
             }
-
-           
+                       
             if (!Directory.Exists(selectedFiles.pathToFolder))
             {
                 Directory.CreateDirectory(selectedFiles.pathToFolder);

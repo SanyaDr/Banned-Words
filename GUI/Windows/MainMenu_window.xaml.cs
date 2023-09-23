@@ -1,5 +1,6 @@
 ﻿using GUI.Windows;
 using Model;
+using System.Threading;
 using System.Windows;
 
 namespace MainMenu
@@ -14,11 +15,26 @@ namespace MainMenu
         public BannedWords banned;
         public MainMenu_window()
         {
+            App_Startup();
             InitializeComponent();
             th = new ThreadsClass();
             selected = new SelectedFiles();
             banned = new BannedWords();
             Closing += MainMenu_window_Closing;
+        }
+
+        Mutex mutex;
+
+        private void App_Startup()
+        {
+            bool isCreated;
+            string appName = "BannedWordsApplication";
+            mutex = new Mutex(true, appName, out isCreated);
+            if (!isCreated)
+            {
+                MessageBox.Show("Приложение уже запущено!");
+                Application.Current.Shutdown();
+            }
         }
 
         private void MainMenu_window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

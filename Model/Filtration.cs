@@ -66,7 +66,6 @@ namespace Model
             isFiltering = true;
             filterStatus = 0;
 
-
             try
             {
                 foreach (var file in selectedFiles)
@@ -120,7 +119,6 @@ namespace Model
                                 }
                             }).Start();
                             filterStatus += lvlForEachFile;
-                            Thread.Sleep(750);
                         }
                     }
                     filesToScanLeft--;
@@ -129,7 +127,6 @@ namespace Model
                         logger.PrintNoOneBanWordFound();
                     }
                     logger.PrintFinishedScanFile(file, fileName);
-                    Thread.Sleep(350);
                 }
                 filterStatus = 100;
                 isFiltering = false;
