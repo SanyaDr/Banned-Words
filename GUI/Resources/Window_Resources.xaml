@@ -102,7 +102,7 @@
         <Setter Property="Margin" Value="35 0"/>
         <Setter Property="Height" Value="18"/>
         <Setter Property="Background" Value="#555555"/>
-        <Setter Property="Value" Value="15"/>
+        <Setter Property="Value" Value="0"/>
     </Style>
     
 </ResourceDictionary>

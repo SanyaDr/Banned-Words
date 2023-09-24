@@ -12,24 +12,22 @@
     </Window.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="169*"/>
-            <ColumnDefinition Width="431*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.35*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         
         <!-- Заголовок -->
-        <StackPanel Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="2" Margin="10 5">
+        <StackPanel HorizontalAlignment="Left" Margin="10 5">
             <Label Content="Запрещенные слова!#!" Style="{StaticResource MainHeading_Label}"/>
             <Label Content="Заменим все запрещенные слова из ваших файлов!" Style="{StaticResource Subtitle_Label}"/>
+            <Label x:Name="Author_Label" Content="Дровосеков Александр, 2023" Style="{StaticResource Subtitle_Label}" FontSize="12" MouseDoubleClick="Author_Label_MouseDoubleClick" Cursor="Hand"/>
+
             <Border Height="2" Background="Gray" Width="500"/>
         </StackPanel>
         
         <!--Кнопки-->
-        <StackPanel Grid.ColumnSpan="2" Grid.Row="1">
+        <StackPanel Grid.Row="1">
             <Button x:Name="StartApp_Button" Content="Начать проверку" Style="{StaticResource CallTask_Button}" Click="StartApp_Button_Click" />
             <Button x:Name="Settings_Button" Content="Настройки" Style="{StaticResource CallTask_Button}" Click="Settings_Button_Click"/>
             <Border Height="30"/>

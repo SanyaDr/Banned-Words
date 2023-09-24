@@ -65,9 +65,9 @@ namespace MainMenu
             settings.ShowDialog();
         }
 
-        private void Author_Button_Click(object sender, RoutedEventArgs e)
+        private void Author_Label_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            //Сделать отдельное окно
+            MessageBox.Show("Выполнил: Дровосеков Александр\n      2023\n\n tg: @SanyaDr");
         }
     }
 }

@@ -77,13 +77,11 @@ namespace GUI.Windows
             th.Kill();
         }
 
-
-
         private void StartScan(object sender, RoutedEventArgs e)
         {
             th.ResumeThreads();
             ScanResult_ProgressBar.Value = 0;
-            if(PathToSaveFiles_TextBox.Text.Length <= 0)
+            if (PathToSaveFiles_TextBox.Text.Length <= 0)
             {
                 selectedFiles.SelectResultDirectory(string.Empty);
                 PathToSaveFiles_TextBox.Text = selectedFiles.pathToFolder;
@@ -92,7 +90,7 @@ namespace GUI.Windows
             {
                 selectedFiles.pathToFolder = PathToSaveFiles_TextBox.Text;
             }
-                       
+
             if (!Directory.Exists(selectedFiles.pathToFolder))
             {
                 Directory.CreateDirectory(selectedFiles.pathToFolder);
